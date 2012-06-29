@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><map height="20" orientation="orthogonal" tileheight="32" tilewidth="32" version="1.0" width="20"><properties><property name="blended tiles" value="1,2,3,4,5,6,7,8,9,10,12,13,14,15,19,20,21,22,23,24,25,26,27,28,30,31,32,33"/></properties>
+ <tileset firstgid="1" name="grass" tileheight="32" tilewidth="32">
+  <image height="192" source="tiles/grass.png" width="96"/>
+ </tileset>
+ <tileset firstgid="19" name="dirt" tileheight="32" tilewidth="32">
+  <image height="192" source="tiles/dirt.png" width="96"/>
+ </tileset>
+ <layer height="20" name="Tile Layer 1" width="20">
+  <data compression="zlib" encoding="base64">
+   eJzjZmBg4B7Fo3gUj+JRPIpJxADhuxEx
+  </data>
+ </layer>
+ <layer height="20" name="Tile Layer 2" width="20">
+  <data compression="zlib" encoding="base64">
+   eJy9lEsPgzAMg3vjNbbzeGzs//9JfEGKgkmTwrD0najq2EpJ6T+qQA2ai+5rQQce5NsbDGAM3NeDJ3il/awTmMFHnI/k0bN+wQJ+xhkpnUfO6smjxfKUdLaJ5dEeVl8eb+1h9cXy5WT1xfJtyu1BtFeWS3p4sklPlkt6sGye/ZfK7aNn/yOy/O74z5x5K2z2o35LfY76LXkXUZ8VZlsLQQ==
+  </data>
+ </layer>
+</map>

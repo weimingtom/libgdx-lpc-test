@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
+import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 
@@ -20,6 +24,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Sprite sprite;
 	private Stage stage;
 	private Player player;
+	private TiledMap map;
+	private TileAtlas tileAtlas;
+	private TileMapRenderer tileMapRenderer;
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -30,6 +37,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		tileMapRenderer.render();
 		stage.draw();
 		stage.act(Gdx.graphics.getDeltaTime());
 	}
@@ -46,7 +54,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		batch = new SpriteBatch();
 		
-		texture = new Texture(Gdx.files.internal("data/grass.png"));
+/*		texture = new Texture(Gdx.files.internal("data/grass.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
 		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
@@ -54,7 +62,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		sprite = new Sprite(region);
 		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);*/
 		
 		stage = new Stage(w, h, false, batch);
 		player = new Player();
@@ -62,6 +70,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		player.y = 20;
 		
 		stage.addActor(player);
+		
+		map = TiledLoader.createMap(Gdx.files.internal("data/maps/test2.tmx"));
+		tileAtlas = new TileAtlas(map, Gdx.files.internal("data/maps/"));
+		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 32, 32);
 		
 		Gdx.input.setInputProcessor(this);
 	}
