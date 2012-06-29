@@ -1,0 +1,13 @@
+LPC Preparation Project
+=======================
+
+This repository is just for testing the waters with libGDX before the Liberated Pixel Cup coding competition begins.
+Some code, such as the Tileset class, will be re-used for the actual project and thus I want to have that small amount of code publicly accessible.
+
+Contained here are 4 project directories that can be imported into Eclipse.
+LWGL is used for the desktop version of the demo.
+The Android SDK is needed (of course) to build the Android version.
+The HTML5 version does not work as of yet.
+
+All code is licensed under the GPLv3.
+All art is licensed under CC-BY-SA.
