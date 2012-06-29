@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
 import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 
@@ -27,6 +29,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private TiledMap map;
 	private TileAtlas tileAtlas;
 	private TileMapRenderer tileMapRenderer;
+	private OrthographicCamera camera;
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -34,12 +37,37 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		centerCamera();
+		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		tileMapRenderer.render();
+		tileMapRenderer.render(camera);
 		stage.draw();
 		stage.act(Gdx.graphics.getDeltaTime());
+	}
+	
+	public void centerCamera() {
+		float x = player.x;
+		float y = player.y;
+		float halfW = Gdx.graphics.getWidth() / 2;
+		float halfH = Gdx.graphics.getHeight() / 2;
+		float mapW = tileMapRenderer.getMapWidthUnits();
+		float mapH = tileMapRenderer.getMapHeightUnits();
+		
+		if(x < halfW)
+			x = halfW;
+		else if(x > mapW - halfW) {
+			x = mapW - halfW;
+		}
+		
+		if(y < halfH) {
+			y = halfH;
+		} else if(y > mapH - halfH) {
+			y = mapH - halfH;
+		}
+		
+		camera.position.set(x, y, 0);
 	}
 
 	@Override
@@ -51,6 +79,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	public void show() {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+		
+		camera = new OrthographicCamera(w, h);
+		camera.translate(100, 100);
 		
 		batch = new SpriteBatch();
 		
@@ -65,6 +96,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);*/
 		
 		stage = new Stage(w, h, false, batch);
+		stage.setCamera(camera);
 		player = new Player();
 		player.x = 20;
 		player.y = 20;
@@ -106,8 +138,12 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		final float speed = 200;
-		float dx = x - player.x;
-		float dy = (Gdx.graphics.getHeight() - y) - player.y;
+		Vector2 pos = new Vector2();
+		stage.toStageCoordinates(x, y, pos);
+		//x += camera.position.x;
+		//y = (int) ((Gdx.graphics.getHeight() - y) + camera.position.y);
+		float dx = pos.x - player.x;
+		float dy = pos.y - player.y;
 		float distance = (float) Math.sqrt(dx * dx + dy * dy);
 		player.action(MoveBy.$(dx, dy, distance / speed));
 		return true;

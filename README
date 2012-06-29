@@ -1,13 +1,26 @@
 LPC Preparation Project
 =======================
 
+About
+-----
 This repository is just for testing the waters with libGDX before the Liberated Pixel Cup coding competition begins.
 Some code, such as the Tileset class, will be re-used for the actual project and thus I want to have that small amount of code publicly accessible.
 
-Contained here are 4 project directories that can be imported into Eclipse.
-LWGL is used for the desktop version of the demo.
-The Android SDK is needed (of course) to build the Android version.
-The HTML5 version does not work as of yet.
+Projects
+--------
+rpg          Base project for all shared code. Pretty much the entire game code lives here.
+rpg-desktop  Desktop specific code. LWJGL backend.
+rpg-android  Android specific code. Game assets for ALL versions live here in the 'assets' directory.
+rpg-html     HTML5 specific code.
+rpg-packer   Tiled maps and sprite sheets are here. This project uses the TiledMapPacker and TexturePacker to generate the final maps and textures that will be used.
 
+Dependencies
+------------
+All necessary libraries are included in the libs folder for each project.
+Android SDK 2.1 needed for Android version.
+GWT needed for HTML5 version.
+
+Legal
+-----
 All code is licensed under the GPLv3.
 All art is licensed under CC-BY-SA.
