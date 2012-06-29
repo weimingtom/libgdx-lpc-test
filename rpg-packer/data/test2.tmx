@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
-  <image source="../../TexturePacker/data/tiles/grass.png" width="96" height="192"/>
+  <image source="tiles/grass.png" width="96" height="192"/>
  </tileset>
  <tileset firstgid="19" name="dirt" tilewidth="32" tileheight="32">
-  <image source="../../TexturePacker/data/tiles/dirt.png" width="96" height="192"/>
+  <image source="tiles/dirt.png" width="96" height="192"/>
  </tileset>
  <tileset firstgid="37" name="hole" tilewidth="32" tileheight="32">
   <image source="tiles/hole.png" width="96" height="192"/>
@@ -17,12 +17,12 @@
  </tileset>
  <layer name="Tile Layer 1" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0rEJACAQA8D0v7Sju4GF4CtyxdUJJJWkAAD42li4lXuyh9x3du74N/smVkJARQ==
+   eJzt0jsOQEAQxvHt9wzO4dWgwxHEo/C8haP7ChLZWIWYIUzxy5T/SWa0UkoLIcSNKqgNDXGzgAFGwwQlYbeFzqIn7LrgWfiE3Qhii4ShGzB3U8ggXOdeTtjdOAyNo6bNF7t/Mp94qku5h3Tfc2eO/xbXLQ/cT5U=
   </data>
  </layer>
  <layer name="Tile Layer 2" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwSgYBfQANUBciwfX0cjeegLyVTRyByF70UHjqL00tbcciJuBuIVK9jZBzasgoI5a/sRlPy5MLX8OdwAAPSIS6g==
+   eJxjYBgFo2AUjALqgSAc4rZAHEJPh0CB2wDYORKAzwDbb4dG0xo408keGJAEYikgdoHS6FiaRvbKEJCXG2b2ygOxAh6sSAM7a4C4Fg+uo4GdIFBPQL6KRu4gZC86aBy1l6b2lgNxMxC3UMneJqh5FQTUUcufuOzHhanlz+EOABMwF8Y=
   </data>
  </layer>
 </map>
