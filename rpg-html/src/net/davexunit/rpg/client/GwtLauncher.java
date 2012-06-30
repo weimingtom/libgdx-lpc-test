@@ -1,6 +1,6 @@
 package net.davexunit.rpg.client;
 
-import net.davexunit.rpg.RPGOld;
+import net.davexunit.rpg.RPG;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
@@ -14,6 +14,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new RPGOld();
+		return new RPG();
 	}
 }

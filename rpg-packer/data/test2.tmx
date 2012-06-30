@@ -15,14 +15,38 @@
  <tileset firstgid="118" name="water" tilewidth="32" tileheight="32">
   <image source="tiles/water.png" width="96" height="192"/>
  </tileset>
- <layer name="Tile Layer 1" width="30" height="30">
+ <tileset firstgid="136" name="treetop" tilewidth="32" tileheight="32">
+  <image source="tiles/treetop.png" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="178" name="trunk" tilewidth="32" tileheight="32">
+  <image source="tiles/trunk.png" width="192" height="96"/>
+ </tileset>
+ <tileset firstgid="196" name="signs" tilewidth="32" tileheight="32">
+  <image source="tiles/signs.png" width="96" height="64"/>
+ </tileset>
+ <layer name="ground" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0jsOQEAQxvHt9wzO4dWgwxHEo/C8haP7ChLZWIWYIUzxy5T/SWa0UkoLIcSNKqgNDXGzgAFGwwQlYbeFzqIn7LrgWfiE3Qhii4ShGzB3U8ggXOdeTtjdOAyNo6bNF7t/Mp94qku5h3Tfc2eO/xbXLQ/cT5U=
+   eJztVjEOwCAIZHep7v1rn96lJoYqAkJD0w63GQ7uOGICgPTjMWxBebLgbQnYfzRQGkm0ftqPVd2tfBvVsdbOWkOqztt32hNYN6wV9p2rpeet4uxifRPN+/1j6M3u7f1I8yKow9nfWQ0870HAMhMS3l4f2uyu8lb0MjvKcYG7v1pe6T5o5tX6284/ypGWl5uplleSQ85b6k7P7obX3wTzUj1q/x/5wgmJJEcb
   </data>
  </layer>
- <layer name="Tile Layer 2" width="30" height="30">
+ <layer name="fringe" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALqgSAc4rZAHEJPh0CB2wDYORKAzwDbb4dG0xo408keGJAEYikgdoHS6FiaRvbKEJCXG2b2ygOxAh6sSAM7a4C4Fg+uo4GdIFBPQL6KRu4gZC86aBy1l6b2lgNxMxC3UMneJqh5FQTUUcufuOzHhanlz+EOABMwF8Y=
+   eJxjYBgFo2DwgE1AvBmIt9DZ3h1AvBOId1FgBjlu3wfE+4H4AAX2UsPt5ABquH04gGggTgfiDDScCcSxROgnN82nAHEqDpxGhH5y0405EFvgwJYMhP1DbrpxAGJHILaC0sjYiYF2+cATiL2A2BpKI2NvBsrygdQA4ZEGFKBYFElMBEmcVhgGZJDYckBcA8S1eHAd8V7DC9DtrSegvopK7iDVXnTQCKVJLRupZS+pZQm17CW1LCHX3nIgbgbiFiLVE7K3CWpeBQF9jQTkSbUXBJDTSDMOTKw/caU3bPZSs77BZRY2e6nZ7kI3CwDUB1R3
+  </data>
+ </layer>
+ <layer name="fringe2" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowATTATiSUA8mc72TgfiGUA8kwIzhrLbR8HAgeGWbmjtHx8c4rTMByeR2HZoNK2BM53sQQcuA2TvKBgFMDDcysZRQH1AzTRCilnUTCMjPb0BACElGos=
+  </data>
+ </layer>
+ <layer name="over" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1DEOABAQRFFnFDXugzubWiNkE8R/ye+3GJzDzYqqqp0+ZMPLt+Oc3d14FVUayioY3reKdwDAAn8JZiw3wt7+0gHLuw5d
+  </data>
+ </layer>
+ <layer name="over2" width="30" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztzTENAAAIA7AZ48W/JDRwkZDWQBOAn+ro7aMXAGBrAKEMAIQ=
   </data>
  </layer>
 </map>

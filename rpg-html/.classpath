@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" combineaccessrules="false" path="/rpg"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/rpg/libs/gdx.jar" sourcepath="/rpg/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="/rpg/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt.jar" sourcepath="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rpg"/>
+	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="/rpg/libs/gdx.jar" sourcepath="/rpg/libs/gdx-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt.jar" sourcepath="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/gdx-backend-gwt-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/rpg/libs/gdx-sources.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

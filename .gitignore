@@ -2,4 +2,11 @@
 .settings
 bin/
 gen/
+rpg-html/war/net.davexunit.rpg.GwtDefinition/
+rpg-html/war/WEB-INF/deploy
+rpg-html/war/WEB-INF/classes/
+rpg-html/war/index.html
+rpg-html/gwt-unitCache/
+rpg-html/.gwt/
 packed.png
+*~

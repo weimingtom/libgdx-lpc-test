@@ -444,3 +444,449 @@ house
   orig: 32, 32
   offset: 0, 0
   index: 0
+
+house2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+house
+  rotate: false
+  xy: 0, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 62
+house
+  rotate: false
+  xy: 0, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 61
+house
+  rotate: false
+  xy: 0, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 60
+house
+  rotate: false
+  xy: 0, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 59
+house
+  rotate: false
+  xy: 32, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 58
+house
+  rotate: false
+  xy: 32, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 57
+house
+  rotate: false
+  xy: 32, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 56
+house
+  rotate: false
+  xy: 32, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 54
+house
+  rotate: false
+  xy: 64, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 53
+house
+  rotate: false
+  xy: 64, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 52
+house
+  rotate: false
+  xy: 64, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 51
+house
+  rotate: false
+  xy: 64, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 50
+house
+  rotate: false
+  xy: 96, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 49
+house
+  rotate: false
+  xy: 96, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 48
+house
+  rotate: false
+  xy: 96, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 47
+house
+  rotate: false
+  xy: 96, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 46
+house
+  rotate: false
+  xy: 128, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 45
+house
+  rotate: false
+  xy: 128, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 44
+house
+  rotate: false
+  xy: 128, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 43
+house
+  rotate: false
+  xy: 128, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 42
+house
+  rotate: false
+  xy: 160, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 41
+house
+  rotate: false
+  xy: 160, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 40
+house
+  rotate: false
+  xy: 160, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 39
+house
+  rotate: false
+  xy: 160, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 38
+house
+  rotate: false
+  xy: 192, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 37
+house
+  rotate: false
+  xy: 192, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 36
+house
+  rotate: false
+  xy: 192, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 35
+house
+  rotate: false
+  xy: 192, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 34
+house
+  rotate: false
+  xy: 224, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 32
+house
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 31
+house
+  rotate: false
+  xy: 224, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 30
+house
+  rotate: false
+  xy: 224, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 29
+house
+  rotate: false
+  xy: 256, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 28
+house
+  rotate: false
+  xy: 256, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 27
+house
+  rotate: false
+  xy: 256, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 26
+house
+  rotate: false
+  xy: 256, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 25
+house
+  rotate: false
+  xy: 288, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 22
+house
+  rotate: false
+  xy: 288, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 21
+house
+  rotate: false
+  xy: 288, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 20
+house
+  rotate: false
+  xy: 288, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 19
+house
+  rotate: false
+  xy: 320, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 18
+house
+  rotate: false
+  xy: 320, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 17
+house
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 16
+house
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 23
+house
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 24
+house
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 33
+house
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 55
+house
+  rotate: false
+  xy: 320, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 15
+house
+  rotate: false
+  xy: 352, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 13
+house
+  rotate: false
+  xy: 352, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 12
+house
+  rotate: false
+  xy: 352, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 14
+house
+  rotate: false
+  xy: 352, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 11
+house
+  rotate: false
+  xy: 352, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 10
+house
+  rotate: false
+  xy: 384, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 9
+house
+  rotate: false
+  xy: 416, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 8
+house
+  rotate: false
+  xy: 448, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 7
+house
+  rotate: false
+  xy: 480, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 6
+house
+  rotate: false
+  xy: 384, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 5
+house
+  rotate: false
+  xy: 384, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 4
+house
+  rotate: false
+  xy: 384, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+house
+  rotate: false
+  xy: 416, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+house
+  rotate: false
+  xy: 448, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+house
+  rotate: false
+  xy: 480, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 0
