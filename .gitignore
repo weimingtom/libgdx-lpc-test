@@ -2,6 +2,7 @@
 .settings
 bin/
 gen/
+rpg-desktop/hs_err*
 rpg-html/war/net.davexunit.rpg.GwtDefinition/
 rpg-html/war/WEB-INF/deploy
 rpg-html/war/WEB-INF/classes/

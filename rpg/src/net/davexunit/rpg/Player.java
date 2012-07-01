@@ -13,10 +13,7 @@ public class Player extends Actor {
 	private Animation anim;
 	private float animTime;
 	
-	public Player() {
-		Texture texture = new Texture(Gdx.files.internal("data/ghost.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+	public Player(Texture texture) {
 		tileset = new Tileset(texture, 40, 46, 0, 0);
 		anim = new Animation(0.15f, tileset.getTileRange(tileset.coordToIndex(0, 2), 3));
 		anim.setPlayMode(Animation.LOOP_PINGPONG);

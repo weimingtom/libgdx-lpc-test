@@ -20,6 +20,16 @@ All necessary libraries are included in the libs folder for each project.
 Android SDK 2.1 needed for Android version.
 GWT needed for HTML5 version.
 
+Workflow
+--------
+Some aspects of the workflow require some explanation.
+
+Tiled maps need to be run through a preprocessor first. Therefore, all .tmx map files and .png tilesets are stored in rpg-packer/data. Create maps here and then run the rpg-packer project to pack the maps and store them in rpg-android/assets/data/maps. Once that is done, they are ready for libgdx to use.
+
+Each major game state (Main Menu, Battle, Overworld, etc.) should implement the Screen interface. See the examples ExploreScreen.java and MainMenuScreen.java in the main rpg project for how to do this.
+
+The scene2d scene graph package should be used to handle all game entities. There are already nice user interface classes that use this scene graph so take advantage of them. There are also a lot of benefits to using Actors such an being able to perform Actions. This will come in handy for scripting. So, once again, USE SCENE2D!
+
 Legal
 -----
 All code is licensed under the GPLv3.
