@@ -122,7 +122,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 30, 30);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-		Path path = pathfinder.searchPath(1, 29, 16, 15);
+		Path path = pathfinder.searchPath(1, 29, 26, 8);
 		
 		for(Path.Point p: path.points) {
 			Player pp = new Player(texture);
