@@ -7,6 +7,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
 import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
@@ -15,6 +17,9 @@ import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
@@ -22,6 +27,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Texture texture;
 	//private Sprite sprite;
 	private Stage stage;
+	private Stage uiStage;
 	private Player player;
 	private TiledMap map;
 	private TileAtlas tileAtlas;
@@ -42,6 +48,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		tileMapRenderer.render(camera);
 		stage.draw();
 		stage.act(Gdx.graphics.getDeltaTime());
+		uiStage.draw();
 	}
 	
 	public void centerCamera() {
@@ -81,7 +88,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		camera.translate(100, 100);
 		
 		batch = new SpriteBatch();
-		
+
 /*		texture = new Texture(Gdx.files.internal("data/grass.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
@@ -103,6 +110,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		map = TiledLoader.createMap(Gdx.files.internal("data/maps/test2.tmx"));
 		tileAtlas = new TileAtlas(map, Gdx.files.internal("data/maps/"));
 		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 32, 32);
+		
+		uiStage = new Stage(w, h, false);
+		uiStage.addActor(new TextBox());
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -130,6 +140,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		batch.dispose();
 		texture.dispose();
 		stage.dispose();
+		uiStage.dispose();
 	}
 
 	@Override
