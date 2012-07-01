@@ -26,16 +26,20 @@ public class TextBox extends Actor
 		style.font = new BitmapFont();
 		style.fontColor = new Color(Color.WHITE);
 		
-		mTextField = new TextField("lalalalalala", style);
+		mTextField = new TextField("", style);
+		mLabel = new Label("lalala\nuuuuuuuuuuuuuuulalal", new Label.LabelStyle(new BitmapFont(), new Color(Color.WHITE)));
 		
 		mTextField.width = Gdx.graphics.getWidth();
 		mTextField.height = Gdx.graphics.getHeight() / 3;
+		mLabel.width = Gdx.graphics.getWidth();
+		mLabel.height = Gdx.graphics.getHeight() / 3;
 	}
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
 		mTextField.draw(batch, (float) 1.0);
+		mLabel.draw(batch, (float) 1.0);
 	}
 
 	@Override
