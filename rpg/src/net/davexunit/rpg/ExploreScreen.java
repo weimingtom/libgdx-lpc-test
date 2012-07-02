@@ -119,8 +119,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		stage = new Stage(w, h, false, batch);
 		stage.setCamera(camera);
 		player = new Player(texture);
-		player.x = 20;
-		player.y = 20;
+		player.x = 32;
+		player.y = 32;
 		
 		stage.addActor(player);
 		
@@ -129,8 +129,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 30, 30);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-		//Path path = pathfinder.searchPath(1, 29, 26, 8);
-		//player.action(FollowPath.$(path,  map, (path.points.size() * map.tileWidth) / playerSpeed));
 		
 		/*Player pp = new Player(texture);
 		Path.Point p = path.points.getLast();
@@ -160,7 +158,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.width = Gdx.graphics.getWidth();
 		textBox.height = Gdx.graphics.getHeight() / 4;
 		
-		uiStage.addActor(textBox);
+		//uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -192,35 +190,14 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		uiStage.dispose();
 	}
 
-	private boolean checkCollision(int tileX, int tileY) {
-		if (tileX < 0 || tileX >= map.width || tileY < 0 || tileY >= map.height)
-			return true;
-
-		System.out.println("tile = " + map.layers.get(5).tiles[tileY][tileX]);
-
-		if (map.layers.get(5).tiles[tileY][tileX] != 0)
-			return true;
-
-		return false;
-	}
-
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		final float speed = 200;
-
 		Vector2 pos = new Vector2();
 		stage.toStageCoordinates(x, y, pos);
 		int endX = (int) pos.x / map.tileWidth;
 		int endY = map.height - 1 - (int) pos.y / map.tileHeight;
 		int startX = (int) player.x / map.tileWidth;
 		int startY = map.height - (int) player.y / map.tileHeight - 1;
-
-		/*if (!checkCollision(tileX, tileY)) {
-			float dx = pos.x - player.x;
-			float dy = pos.y - player.y;
-			float distance = (float) Math.sqrt(dx * dx + dy * dy);
-			player.action(MoveBy.$(dx, dy, distance / speed));
-		}*/
 		
 		Path path = pathfinder.searchPath(startX, startY, endX, endY);
 		if(path != null)

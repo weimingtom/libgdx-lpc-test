@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import com.badlogic.gdx.utils.Pool;
-
 public class Pathfinder {
 	private PathfinderStrategy strategy;
 	private PathNodePool pathNodePool;
@@ -42,10 +40,7 @@ public class Pathfinder {
 			
 			if(current.equals(end)) {
 				Path path = reconstructPath(current);
-				pathNodePool.clear();
-				openList.clear();
-				closedList.clear();
-				neighbors.clear();
+				cleanUp();
 				return path;
 			}
 			
@@ -74,7 +69,16 @@ public class Pathfinder {
 			}
 		}
 		
+		cleanUp();
+		
 		return null;
+	}
+	
+	private void cleanUp() {
+		pathNodePool.clear();
+		openList.clear();
+		closedList.clear();
+		neighbors.clear();
 	}
 	
 	private Path reconstructPath(PathNode current) {
