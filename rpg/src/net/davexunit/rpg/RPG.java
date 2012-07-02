@@ -13,6 +13,6 @@ public class RPG extends Game {
 		
 		exploreScreen = new ExploreScreen(this);
 		mainMenuScreen = new MainMenuScreen(this);
-		setScreen(mainMenuScreen);
+		setScreen(exploreScreen);
 	}
 }

@@ -37,6 +37,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Stage uiStage;
 	private Player player;
+	private final float playerSpeed;
 	private TiledMap map;
 	private TileAtlas tileAtlas;
 	private TileMapRenderer tileMapRenderer;
@@ -45,6 +46,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	public ExploreScreen(RPG game) {
 		this.game = game;
+		playerSpeed = 250;
 	}
 
 	@Override
@@ -127,14 +129,14 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 30, 30);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-		Path path = pathfinder.searchPath(1, 29, 26, 8);
+		//Path path = pathfinder.searchPath(1, 29, 26, 8);
+		//player.action(FollowPath.$(path,  map, (path.points.size() * map.tileWidth) / playerSpeed));
 		
-		for(Path.Point p: path.points) {
-			Player pp = new Player(texture);
-			pp.x = p.x * map.tileWidth;
-			pp.y = (map.height - p.y - 1) * map.tileHeight;
-			stage.addActor(pp);
-		}
+		/*Player pp = new Player(texture);
+		Path.Point p = path.points.getLast();
+		pp.x = p.x * map.tileWidth;
+		pp.y = (map.height - p.y - 1) * map.tileHeight;
+		stage.addActor(pp);*/
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -156,7 +158,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 				
 		TextBox textBox = new TextBox(text, textBoxStyle);
 		textBox.width = Gdx.graphics.getWidth();
-		textBox.height = Gdx.graphics.getHeight() / 3;
+		textBox.height = Gdx.graphics.getHeight() / 4;
 		
 		uiStage.addActor(textBox);
 		
@@ -208,15 +210,21 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 		Vector2 pos = new Vector2();
 		stage.toStageCoordinates(x, y, pos);
-		int tileX = (int) pos.x / map.tileWidth;
-		int tileY = map.height - 1 - (int) pos.y / map.tileHeight;
+		int endX = (int) pos.x / map.tileWidth;
+		int endY = map.height - 1 - (int) pos.y / map.tileHeight;
+		int startX = (int) player.x / map.tileWidth;
+		int startY = map.height - (int) player.y / map.tileHeight - 1;
 
-		if (!checkCollision(tileX, tileY)) {
+		/*if (!checkCollision(tileX, tileY)) {
 			float dx = pos.x - player.x;
 			float dy = pos.y - player.y;
 			float distance = (float) Math.sqrt(dx * dx + dy * dy);
 			player.action(MoveBy.$(dx, dy, distance / speed));
-		}
+		}*/
+		
+		Path path = pathfinder.searchPath(startX, startY, endX, endY);
+		if(path != null)
+			player.action(FollowPath.$(path,  map, (path.points.size() * map.tileWidth) / playerSpeed));
 
 		return true;
 	}
