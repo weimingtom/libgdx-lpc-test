@@ -33,7 +33,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
 	private SpriteBatch batch;
 	private Texture texture;
-	//private Sprite sprite;
+	// private Sprite sprite;
 	private Stage stage;
 	private Stage uiStage;
 	private Player player;
@@ -42,28 +42,28 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private TileMapRenderer tileMapRenderer;
 	private OrthographicCamera camera;
 	private Pathfinder pathfinder;
-	
+
 	public ExploreScreen(RPG game) {
 		this.game = game;
 	}
-	
+
 	@Override
 	public void render(float delta) {
-		final int[] underLayers = {0, 1, 2};
-		final int[] overLayers = {3, 4};
-		
+		final int[] underLayers = { 0, 1, 2 };
+		final int[] overLayers = { 3, 4 };
+
 		stage.act(Gdx.graphics.getDeltaTime());
 		centerCamera();
-		
+
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		tileMapRenderer.render(camera, underLayers);
 		stage.draw();
 		tileMapRenderer.render(camera, overLayers);
 		uiStage.draw();
 	}
-	
+
 	public void centerCamera() {
 		float x = player.x;
 		float y = player.y;
@@ -71,19 +71,19 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		float halfH = Gdx.graphics.getHeight() / 2;
 		float mapW = tileMapRenderer.getMapWidthUnits();
 		float mapH = tileMapRenderer.getMapHeightUnits();
-		
-		if(x < halfW)
+
+		if (x < halfW)
 			x = halfW;
-		else if(x > mapW - halfW) {
+		else if (x > mapW - halfW) {
 			x = mapW - halfW;
 		}
-		
-		if(y < halfH) {
+
+		if (y < halfH) {
 			y = halfH;
-		} else if(y > mapH - halfH) {
+		} else if (y > mapH - halfH) {
 			y = mapH - halfH;
 		}
-		
+
 		camera.position.set(x, y, 0);
 		camera.update();
 	}
@@ -137,7 +137,28 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		}
 		
 		uiStage = new Stage(w, h, false);
-		uiStage.addActor(new TextBox());
+		
+		NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("data/dialogue_box.png")), 16, 16, 16, 16);
+		
+		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
+		textBoxStyle.background = patch;
+		textBoxStyle.font = new BitmapFont();
+		textBoxStyle.padX = 8;
+		textBoxStyle.padY = 4;
+		
+		String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+				"Donec a diam lectus. Sed sit amet ipsum mauris. " +
+				"Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. " +
+				"Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. " +
+				"Nam tincidunt congue enim, ut porta lorem lacinia consectetur. " +
+				"Donec ut libero sed arcu vehicula ultricies a non tortor. " +
+				"Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+				
+		TextBox textBox = new TextBox(text, textBoxStyle);
+		textBox.width = Gdx.graphics.getWidth();
+		textBox.height = Gdx.graphics.getHeight() / 3;
+		
+		uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -168,47 +189,47 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		stage.dispose();
 		uiStage.dispose();
 	}
-	
+
 	private boolean checkCollision(int tileX, int tileY) {
-		if(tileX < 0 || tileX >= map.width || tileY < 0 || tileY >= map.height)
+		if (tileX < 0 || tileX >= map.width || tileY < 0 || tileY >= map.height)
 			return true;
-		
+
 		System.out.println("tile = " + map.layers.get(5).tiles[tileY][tileX]);
-		
-		if(map.layers.get(5).tiles[tileY][tileX] != 0)
+
+		if (map.layers.get(5).tiles[tileY][tileX] != 0)
 			return true;
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		final float speed = 200;
-		
+
 		Vector2 pos = new Vector2();
 		stage.toStageCoordinates(x, y, pos);
 		int tileX = (int) pos.x / map.tileWidth;
 		int tileY = map.height - 1 - (int) pos.y / map.tileHeight;
 
-		if(!checkCollision(tileX, tileY)) {
+		if (!checkCollision(tileX, tileY)) {
 			float dx = pos.x - player.x;
 			float dy = pos.y - player.y;
 			float distance = (float) Math.sqrt(dx * dx + dy * dy);
 			player.action(MoveBy.$(dx, dy, distance / speed));
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		switch(keycode) {
-			case Input.Keys.BACK:
-			case Input.Keys.ESCAPE:
-				game.setScreen(game.mainMenuScreen);
-				return true;
+		switch (keycode) {
+		case Input.Keys.BACK:
+		case Input.Keys.ESCAPE:
+			game.setScreen(game.mainMenuScreen);
+			return true;
 		}
-		
+
 		return false;
 	}
 }
