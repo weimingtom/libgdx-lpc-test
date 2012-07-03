@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
+import static net.davexunit.rpg.MapActions.*;
+
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
 	private Texture texture;
@@ -94,7 +96,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		player.warp(4, 10);
 		
-		pathfinder = new Pathfinder(new MapPathfinderStrategy(map.getMap()));
+		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -163,11 +165,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		Path path = pathfinder.searchPath(startX, startY, endX, endY);
 		
 		if(path != null) {
-			FollowPathAction action = new FollowPathAction();
-			action.setPath(path);
-			action.setMap(map);
-			action.setDuration((float) path.points.size() / playerSpeed);
-			player.addAction(action);
+			player.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
 		}
 			
 		return true;

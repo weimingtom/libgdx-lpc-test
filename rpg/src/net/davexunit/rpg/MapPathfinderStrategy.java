@@ -2,12 +2,10 @@ package net.davexunit.rpg;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
-
 public class MapPathfinderStrategy implements PathfinderStrategy {
-	private TiledMap map;
+	private Map map;
 	
-	public MapPathfinderStrategy(TiledMap map) {
+	public MapPathfinderStrategy(Map map) {
 		this.map = map;
 	}
 	
@@ -30,12 +28,19 @@ public class MapPathfinderStrategy implements PathfinderStrategy {
 	}
 	
 	private void checkNeighbor(ArrayList<PathNode> neighbors, PathNodePool pool, PathNode neighbor) {
-		if(neighbor.x < 0 || neighbor.x >= map.width || neighbor.y < 0 || neighbor.y >= map.height) {
+		if(neighbor.x < 0 || neighbor.x >= map.getWidth() || neighbor.y < 0 || neighbor.y >= map.getHeight()) {
 			pool.free(neighbor);
 			return;
 		}
 		
-		if(map.layers.get(5).tiles[neighbor.y][neighbor.x] == 202) {
+		int tile = map.getMap().layers.get(5).tiles[neighbor.y][neighbor.x];
+		String property = map.getMap().getTileProperty(tile, "collidable");
+		boolean collidable = false;
+		
+		if(property != null)
+			collidable = property.equals("true") ? true: false;
+		
+		if(collidable) {
 			pool.free(neighbor);
 			return;
 		}
@@ -45,6 +50,6 @@ public class MapPathfinderStrategy implements PathfinderStrategy {
 
 	@Override
 	public int nodeHash(PathNode node) {
-		return node.y * map.width + node.x;
+		return node.y * map.getWidth() + node.x;
 	}
 }
