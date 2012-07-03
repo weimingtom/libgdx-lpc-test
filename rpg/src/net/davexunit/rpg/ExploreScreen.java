@@ -1,68 +1,41 @@
 package net.davexunit.rpg;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
-import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
-import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
-	private SpriteBatch batch;
 	private Texture texture;
-	// private Sprite sprite;
-	private Stage stage;
 	private Stage uiStage;
 	private Player player;
-	private final float playerSpeed;
-	private TiledMap map;
-	private TileAtlas tileAtlas;
-	private TileMapRenderer tileMapRenderer;
-	private OrthographicCamera camera;
+	private Map map;
 	private Pathfinder pathfinder;
+	private final int[] underLayers = { 0, 1, 2 };
+	private final int[] overLayers = { 3, 4 };
+	private final float playerSpeed = 6; // tiles per second
 
 	public ExploreScreen(RPG game) {
 		this.game = game;
-		playerSpeed = 250;
 	}
 
 	@Override
 	public void render(float delta) {
-		final int[] underLayers = { 0, 1, 2 };
-		final int[] overLayers = { 3, 4 };
-
-		stage.act(Gdx.graphics.getDeltaTime());
+		map.act(Gdx.graphics.getDeltaTime());
 		centerCamera();
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		tileMapRenderer.render(camera, underLayers);
-		stage.draw();
-		tileMapRenderer.render(camera, overLayers);
+		map.draw();
 		uiStage.draw();
 	}
 
@@ -71,8 +44,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		float y = player.y;
 		float halfW = Gdx.graphics.getWidth() / 2;
 		float halfH = Gdx.graphics.getHeight() / 2;
-		float mapW = tileMapRenderer.getMapWidthUnits();
-		float mapH = tileMapRenderer.getMapHeightUnits();
+		float mapW = map.getMapWidthUnits();
+		float mapH = map.getMapHeightUnits();
 
 		if (x < halfW)
 			x = halfW;
@@ -86,8 +59,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			y = mapH - halfH;
 		}
 
-		camera.position.set(x, y, 0);
-		camera.update();
+		map.getCamera().position.set(x, y, 0);
+		map.getCamera().update();
 	}
 
 	@Override
@@ -100,11 +73,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(w, h);
-		camera.translate(100, 100);
-		
-		batch = new SpriteBatch();
-		
 		texture = new Texture(Gdx.files.internal("data/ghost.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
@@ -116,25 +84,16 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);*/
 		
-		stage = new Stage(w, h, false, batch);
-		stage.setCamera(camera);
 		player = new Player(texture);
-		player.x = 32;
-		player.y = 32;
 		
-		stage.addActor(player);
+		map = new Map(Gdx.files.internal("data/maps/test2.tmx"), Gdx.files.internal("data/maps"), w, h);
+		map.setUnderLayers(underLayers);
+		map.setOverLayers(overLayers);
+		map.addActor(player);
 		
-		map = TiledLoader.createMap(Gdx.files.internal("data/maps/test2.tmx"));
-		tileAtlas = new TileAtlas(map, Gdx.files.internal("data/maps/"));
-		tileMapRenderer = new TileMapRenderer(map, tileAtlas, 30, 30);
+		player.warp(4, 10);
 		
-		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-		
-		/*Player pp = new Player(texture);
-		Path.Point p = path.points.getLast();
-		pp.x = p.x * map.tileWidth;
-		pp.y = (map.height - p.y - 1) * map.tileHeight;
-		stage.addActor(pp);*/
+		pathfinder = new Pathfinder(new MapPathfinderStrategy(map.getMap()));
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -158,7 +117,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.width = Gdx.graphics.getWidth();
 		textBox.height = Gdx.graphics.getHeight() / 4;
 		
-		//uiStage.addActor(textBox);
+		uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -183,25 +142,26 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		tileMapRenderer.dispose();
-		tileAtlas.dispose();
-		stage.dispose();
+		map.dispose();
 		uiStage.dispose();
 	}
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		Vector2 pos = new Vector2();
-		stage.toStageCoordinates(x, y, pos);
-		int endX = (int) pos.x / map.tileWidth;
-		int endY = map.height - 1 - (int) pos.y / map.tileHeight;
-		int startX = (int) player.x / map.tileWidth;
-		int startY = map.height - (int) player.y / map.tileHeight - 1;
+		map.toMapCoordinates(x, y, pos);
+		int tileWidth = map.getTileWidth();
+		int tileHeight = map.getTileHeight();
+		int height = map.getHeight();
+		int endX = (int) pos.x / tileWidth;
+		int endY = height - 1 - (int) pos.y / tileHeight;
+		int startX = (int) player.x / tileWidth;
+		int startY = height - (int) player.y / tileHeight - 1;
 		
 		Path path = pathfinder.searchPath(startX, startY, endX, endY);
+		
 		if(path != null)
-			player.action(FollowPath.$(path,  map, (path.points.size() * map.tileWidth) / playerSpeed));
+			player.action(FollowPath.$(path,  map.getMap(), (float) path.points.size() / playerSpeed));
 
 		return true;
 	}

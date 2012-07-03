@@ -39,9 +39,13 @@ public class FollowPath extends AnimationAction {
 		int height = map.height * map.tileHeight;
 		
 		if (done) {
-			Path.Point p = path.points.getLast();
+			Path.Point p = path.points.get(path.points.size() - 1);
 			target.x = p.x * map.tileWidth;
 			target.y = height - p.y * map.tileHeight - map.tileHeight;
+			
+			if(target instanceof MapActor) {
+				((MapActor)target).setTilePos(p.x, p.y);
+			}
 		} else {
 			int index = (int) Math.floor(alpha * path.points.size());
 			
@@ -62,6 +66,10 @@ public class FollowPath extends AnimationAction {
 			
 			target.x =  x * map.tileWidth;
 			target.y = height - y * map.tileHeight - map.tileHeight;
+			
+			if(target instanceof MapActor) {
+				((MapActor)target).setTilePos(next.x, next.y);
+			}
 		}
 	}
 

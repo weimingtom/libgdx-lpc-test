@@ -1,6 +1,6 @@
 package net.davexunit.rpg;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Path {
 	public static class Point {
@@ -18,10 +18,10 @@ public class Path {
 		}
 	}
 	
-	public LinkedList<Point> points;
+	public ArrayList<Point> points;
 	
 	public Path() {
-		this.points = new LinkedList<Point>();
+		this.points = new ArrayList<Point>();
 	}
 	
 	public void addPoint(int x, int y) {
