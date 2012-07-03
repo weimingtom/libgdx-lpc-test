@@ -23,7 +23,7 @@ public class Player extends MapActor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		animTime += Gdx.graphics.getDeltaTime();
-		batch.draw(anim.getKeyFrame(animTime), x, y);
+		batch.draw(anim.getKeyFrame(animTime), getX(), getY());
 	}
 
 	@Override

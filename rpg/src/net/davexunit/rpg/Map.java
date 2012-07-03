@@ -137,7 +137,7 @@ public class Map {
 		return map;
 	}
 	
-	public void toMapCoordinates(int x, int y, Vector2 pos) {
-		stage.toStageCoordinates(x, y, pos);
+	public void screenToMapCoordinates(Vector2 pos) {
+		stage.screenToStageCoordinates(pos);
 	}
 }

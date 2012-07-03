@@ -2,12 +2,12 @@ package net.davexunit.rpg;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class TextBox extends Table 
 {
@@ -20,7 +20,7 @@ public class TextBox extends Table
 		this.style = style;
 		this.label = new Label(text, new Label.LabelStyle(style.font, style.fontColor));
 		
-		label.setAlignment(Align.TOP | Align.LEFT, Align.LEFT);
+		label.setAlignment(Align.top | Align.left, Align.left);
 		label.setWrap(true);
 	}
 	
@@ -29,10 +29,8 @@ public class TextBox extends Table
 		this.setBackground(style.background);
 		validate();
 		super.draw(batch, parentAlpha);
-		label.x = style.padX;
-		label.y = -style.padY;
-		label.width = width - style.padX;
-		label.height = height - style.padY;
+		label.setPosition(style.padX, style.padY);
+		label.setSize(getWidth() - style.padX, getHeight() - style.padY);
 		label.draw(batch, parentAlpha);
 	}
 
@@ -46,7 +44,7 @@ public class TextBox extends Table
 	}
 	
 	public static class TextBoxStyle {
-		public NinePatch background;
+		public Drawable background;
 		public BitmapFont font;
 		public Color fontColor;
 		public int padX;

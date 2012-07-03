@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
@@ -40,8 +41,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	}
 
 	public void centerCamera() {
-		float x = player.x;
-		float y = player.y;
+		float x = player.getX();
+		float y = player.getY();
 		float halfW = Gdx.graphics.getWidth() / 2;
 		float halfH = Gdx.graphics.getHeight() / 2;
 		float mapW = map.getMapWidthUnits();
@@ -97,10 +98,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		uiStage = new Stage(w, h, false);
 		
-		NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("data/dialogue_box.png")), 16, 16, 16, 16);
+		NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("data/dialogue_box.png")), 32, 16, 32, 16);
 		
 		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
-		textBoxStyle.background = patch;
+		textBoxStyle.background = new NinePatchDrawable(patch);
 		textBoxStyle.font = new BitmapFont();
 		textBoxStyle.padX = 8;
 		textBoxStyle.padY = 4;
@@ -114,8 +115,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 				"Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 				
 		TextBox textBox = new TextBox(text, textBoxStyle);
-		textBox.width = Gdx.graphics.getWidth();
-		textBox.height = Gdx.graphics.getHeight() / 4;
+		textBox.setWidth(Gdx.graphics.getWidth());
+		textBox.setHeight(Gdx.graphics.getHeight() / 4);
 		
 		uiStage.addActor(textBox);
 		
@@ -149,20 +150,26 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		Vector2 pos = new Vector2();
-		map.toMapCoordinates(x, y, pos);
+		pos.set(x, y);
+		map.screenToMapCoordinates(pos);
 		int tileWidth = map.getTileWidth();
 		int tileHeight = map.getTileHeight();
 		int height = map.getHeight();
 		int endX = (int) pos.x / tileWidth;
 		int endY = height - 1 - (int) pos.y / tileHeight;
-		int startX = (int) player.x / tileWidth;
-		int startY = height - (int) player.y / tileHeight - 1;
+		int startX = (int) player.getX() / tileWidth;
+		int startY = height - (int) player.getY() / tileHeight - 1;
 		
 		Path path = pathfinder.searchPath(startX, startY, endX, endY);
 		
-		if(path != null)
-			player.action(FollowPath.$(path,  map.getMap(), (float) path.points.size() / playerSpeed));
-
+		if(path != null) {
+			FollowPathAction action = new FollowPathAction();
+			action.setPath(path);
+			action.setMap(map);
+			action.setDuration((float) path.points.size() / playerSpeed);
+			player.addAction(action);
+		}
+			
 		return true;
 	}
 

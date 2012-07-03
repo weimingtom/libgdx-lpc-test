@@ -14,13 +14,6 @@ public abstract class MapActor extends Actor {
 		this.tileY = 0;
 	}
 	
-	public MapActor(String name) {
-		super(name);
-		
-		this.tileX = 0;
-		this.tileY = 0;
-	}
-	
 	public Map getMap() {
 		return map;
 	}
@@ -56,8 +49,8 @@ public abstract class MapActor extends Actor {
 		
 		if(map.isActorOpen(tileX, tileY)) {
 			setTilePos(tileX, tileY);
-			x = tileX * map.getTileWidth();
-			y = tileY * map.getTileHeight();
+			setX(tileX * map.getTileWidth());
+			setY(tileY * map.getTileHeight());
 		}
 	}
 }

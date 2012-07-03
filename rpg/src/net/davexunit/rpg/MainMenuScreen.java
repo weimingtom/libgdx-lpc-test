@@ -10,9 +10,10 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ActorEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -54,19 +55,19 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		buttonPatchDown = new NinePatch(buttonTileset.getTile(1), 8, 8, 8, 8);
 		
 		buttonStyle = new TextButtonStyle();
-		buttonStyle.up = buttonPatchUp;
-		buttonStyle.down = buttonPatchDown;
-		buttonStyle.checked = buttonPatchDown;
+		buttonStyle.up = new NinePatchDrawable(buttonPatchUp);
+		buttonStyle.down = new NinePatchDrawable(buttonPatchDown);
+		buttonStyle.checked = new NinePatchDrawable(buttonPatchDown);
 		buttonStyle.font = new BitmapFont();
 		
 		button = new TextButton("Play Game", buttonStyle);
-		button.x = Gdx.graphics.getWidth() / 2 - button.width / 2;
-		button.y = Gdx.graphics.getHeight() / 2 - button.height / 2;
-		button.setClickListener(new ClickListener() {
-	        @Override
-	        public void click(Actor actor, float x, float y) {
-	            game.setScreen(game.exploreScreen);               
-	        }
+		button.setX(Gdx.graphics.getWidth() / 2 - button.getWidth() / 2);
+		button.setY(Gdx.graphics.getHeight() / 2 - button.getHeight() / 2);
+		button.addListener(new ClickListener() {
+			@Override
+			public void clicked(ActorEvent event, float x, float y) {
+				game.setScreen(game.exploreScreen);
+			}
 	    });
 		
 		LabelStyle labelStyle = new LabelStyle();
@@ -74,8 +75,8 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		labelStyle.font = new BitmapFont();
 		
 		Label title = new Label("LPC Test Game", labelStyle);
-		title.x = Gdx.graphics.getWidth() / 2 - title.width / 2;
-		title.y = Gdx.graphics.getHeight() / 2 + 40;
+		title.setX(Gdx.graphics.getWidth() / 2 - title.getWidth() / 2);
+		title.setY(Gdx.graphics.getHeight() / 2 + 40);
 		
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		stage.addActor(button);
