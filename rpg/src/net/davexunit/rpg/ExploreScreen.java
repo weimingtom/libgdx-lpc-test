@@ -131,15 +131,15 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 		
-		/*Player player2 = new Player(texture);
-		player2.warp(0, 0);
-		map.addActor(player2);
+		MapCharacter npc = makeCharacter();
+		npc.warp(0, 0);
+		map.addActor(npc);
 		
-		Path path = pathfinder.searchPath(player2.getTileX(), player2.getTileY(), 29, 29);
+		Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), 29, 29);
 		
 		if(path != null) {
-			player2.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
-		}*/
+			npc.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
+		}
 		
 		uiStage = new Stage(w, h, false);
 		
