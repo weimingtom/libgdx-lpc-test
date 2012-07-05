@@ -1,14 +1,16 @@
 package net.davexunit.rpg;
 
+import java.util.LinkedList;
+
 public class MapActorLayer {
-	private MapActor[][] actors;
+	private LinkedList<MapActor> actors;
 	private int width;
 	private int height;
 	
 	public MapActorLayer(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.actors = new MapActor[height][width];
+		this.actors = new LinkedList<MapActor>();
 	}
 	
 	public int getWidth() {
@@ -19,40 +21,45 @@ public class MapActorLayer {
 		return height;
 	}
 	
-	public boolean isOpen(int x, int y) {
-		return actors[y][x] == null;
-	}
-	
-	public MapActor get(int x, int y) {
-		return actors[y][x];
-	}
-	
-	public boolean add(MapActor actor) {
-		int x = actor.getTileX();
-		int y = actor.getTileY();
-		
-		if(isOpen(x, y)) {
-			actors[y][x] = actor;
-			return true;
+	public boolean checkCollision(MapActor actor, int x, int y) {
+		for(MapActor other: actors) {
+			if(actor == other)
+				continue;
+			
+			if((actor.getCollision() ^ other.getCollision()) == 1) {
+				return true;
+			}
 		}
 		
 		return false;
 	}
 	
-	public MapActor remove(int x, int y) {
-		MapActor actor = actors[y][x];
+	public LinkedList<MapActor> get(int x, int y) {
+		LinkedList<MapActor> list = new LinkedList<MapActor>();
 		
-		actor.setMap(null);
-		actors[y][x] = null;
+		for(MapActor actor: actors) {
+			if(actor.getTileX() == x && actor.getTileY() == y)
+				list.add(actor);
+		}
 		
-		return actor;
+		return list;
+	}
+	
+	public boolean add(MapActor actor) {
+		// Don't add duplicates
+		if(actors.contains(actor))
+			return false;
+		
+		actors.add(actor);
+		
+		return true;
+	}
+	
+	public void remove(MapActor actor) {
+		actors.remove(actor);
 	}
 	
 	public void clear() {
-		for(int y = 0; y < height; ++y) {
-			for(int x = 0; x < width; ++x) {
-				actors[y][x] = null;
-			}
-		}
+		actors.clear();
 	}
 }

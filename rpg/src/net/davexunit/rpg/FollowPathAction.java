@@ -1,20 +1,26 @@
 package net.davexunit.rpg;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
 public class FollowPathAction extends TemporalAction {
 	protected Path path;
 	protected Map map;
+	protected MapCharacter mapCharacter;
+
+	@Override
+	public void setActor(Actor actor) {
+		super.setActor(actor);
+		mapCharacter = (MapCharacter) actor;
+	}
 
 	@Override
 	protected void initialize() {
 		Path.Point p = path.points.get(0);
 		
-		actor.setPosition(p.x * map.getTileWidth(), map.getMapHeightUnits() - p.y * map.getTileHeight() - map.getTileHeight());
-		
-		if(actor instanceof MapActor) {
-			((MapActor)actor).setTilePos(p.x, p.y);
-		}
+		mapCharacter.warp(p.x, p.y);
+		mapCharacter.setOffset(0, 0);
+		mapCharacter.setWalking(true);
 	}
 
 	@Override
@@ -23,11 +29,9 @@ public class FollowPathAction extends TemporalAction {
 		
 		if(index == path.points.size()) {
 			Path.Point p = path.points.get(path.points.size() - 1);
-			actor.setPosition(p.x * map.getTileWidth(), map.getMapHeightUnits() - p.y * map.getTileHeight() - map.getTileHeight());
 			
-			if(actor instanceof MapActor) {
-				((MapActor)actor).setTilePos(p.x, p.y);
-			}
+			mapCharacter.warp(p.x, p.y);
+			mapCharacter.setOffset(0, 0);
 			
 			return;
 		}
@@ -40,15 +44,23 @@ public class FollowPathAction extends TemporalAction {
 		Path.Point current = path.points.get(index);
 		Path.Point next = path.points.get(Math.min(index + 1, path.points.size() - 1));
 		
-		// Calculate tile coordinates using the next tile in the path to determine direction of movement.
-		float x = current.x + (next.x - current.x) * tileDelta;
-		float y = current.y + (next.y - current.y) * tileDelta;
+		// Get differences in position to determine direction
+		float dx = next.x - current.x;
+		float dy = next.y - current.y;
 		
-		actor.setPosition(x * map.getTileWidth(), map.getMapHeightUnits() - y * map.getTileHeight() - map.getTileHeight());
+		// Set position
+		mapCharacter.warp(current.x, current.y);
+		mapCharacter.setOffset(dx * tileDelta, dy * tileDelta);
 		
-		if(actor instanceof MapActor) {
-			((MapActor)actor).setTilePos(next.x, next.y);
-		}
+		// Update animation
+		if(dy > 0)
+			mapCharacter.setDirection(MapCharacter.dirDown);
+		else if(dy < 0)
+			mapCharacter.setDirection(MapCharacter.dirUp);
+		else if(dx > 0)
+			mapCharacter.setDirection(MapCharacter.dirRight);
+		else if(dx < 0)
+			mapCharacter.setDirection(MapCharacter.dirLeft);
 	}
 
 	public Path getPath() {
@@ -66,67 +78,4 @@ public class FollowPathAction extends TemporalAction {
 	public void setMap(Map map) {
 		this.map = map;
 	}
-
-	/*public static FollowPath $(Path path, TiledMap map, float duration) {
-		FollowPath action = pool.obtain();
-		action.duration = duration;
-		action.invDuration = 1 / duration;
-		action.path = path;
-		action.map = map;
-		return action;
-	}*/
-	
-	/*@Override
-	public void setTarget(Actor actor) {
-		this.target = actor;
-		this.taken = 0;
-		this.done = false;
-	}*/
-
-	/*@Override
-	public void act(float delta) {
-		float alpha = createInterpolatedAlpha(delta);
-		int height = map.height * map.tileHeight;
-		
-		if (done) {
-			Path.Point p = path.points.get(path.points.size() - 1);
-			target.x = p.x * map.tileWidth;
-			target.y = height - p.y * map.tileHeight - map.tileHeight;
-			
-			if(target instanceof MapActor) {
-				((MapActor)target).setTilePos(p.x, p.y);
-			}
-		} else {
-			int index = (int) Math.floor(alpha * path.points.size());
-			
-			if(index == path.points.size() - 1)
-				return;
-			
-			// Calculate the percentage (from 0.0 to 1.0) of tile that has been walked upon.
-			float tileStartAlpha =  (float) index / path.points.size();
-			float perTileAlpha = (float) 1 / path.points.size();
-			float tileDelta = (alpha - tileStartAlpha) / perTileAlpha;
-			
-			Path.Point current = path.points.get(index);
-			Path.Point next = path.points.get(index + 1);
-			
-			// Calculate tile coordinates using the next tile in the path to determine direction of movement.
-			float x = current.x + (next.x - current.x) * tileDelta;
-			float y = current.y + (next.y - current.y) * tileDelta;
-			
-			target.setX(x * map.tileWidth);
-			target.setY(height - y * map.tileHeight - map.tileHeight);
-			
-			if(target instanceof MapActor) {
-				((MapActor)target).setTilePos(next.x, next.y);
-			}
-		}
-	}
-
-	@Override
-	public Action copy() {
-		FollowPath followPath = $(path, map, duration);
-		if (interpolator != null) followPath.setInterpolator(interpolator.copy());
-		return followPath;
-	}*/
 }

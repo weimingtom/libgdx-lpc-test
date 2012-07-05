@@ -1,0 +1,14 @@
+* Walkaround Scene
+** Actor-Actor collison
+** Keyboard movement
+** Actor interactions
+*** Dialog
+*** Doors
+*** Items
+* Battle Scene
+** Turn based sequence
+** fr33mind add stuff here
+* Main Menu
+** New Game
+** Load Game
+** Options 

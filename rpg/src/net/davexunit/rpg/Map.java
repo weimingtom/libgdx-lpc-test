@@ -1,5 +1,7 @@
 package net.davexunit.rpg;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
@@ -64,24 +66,48 @@ public class Map {
 		return false;
 	}
 	
-	public boolean isActorOpen(int x, int y) {
-		return actors.isOpen(x, y);
+	public boolean checkCollision(MapActor actor, int x, int y) {
+		return checkMapCollision(x, y) && checkActorCollision(actor, x, y);
 	}
 	
-	public MapActor getActor(int x, int y) {
+	public boolean checkMapCollision(int x, int y) {
+		int tile = map.layers.get(5).tiles[y][x];
+		String property = map.getTileProperty(tile, "collidable");
+		boolean collidable = false;
+		
+		if(property != null)
+			collidable = property.equals("true") ? true: false;
+		
+		return collidable;
+	}
+	
+	public boolean checkActorCollision(MapActor actor, int x, int y) {
+		return actors.checkCollision(actor, x, y);
+	}
+	
+	public LinkedList<MapActor> getActor(int x, int y) {
 		return actors.get(x, y);
 	}
 	
-	public MapActor remove(int x, int y) {
-		MapActor actor = actors.remove(x, y);
-		
+	public void removeActor(MapActor actor) {
+		actors.remove(actor);
+		actor.remove();
 		actor.setMap(null);
-		
-		return actor;
 	}
 	
 	public void clearActors() {
 		actors.clear();
+	}
+	
+	public void warpActor(MapActor actor, int tileX, int tileY) {
+		if(actor.getMap() != this)
+			return;
+		
+		if(!checkCollision(actor, tileX, tileY)) {
+			actor.setTilePos(tileX, tileY);
+		} else {
+			// TODO: Fire collision event
+		}
 	}
 	
 	public int getWidth() {

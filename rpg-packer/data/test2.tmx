@@ -26,6 +26,11 @@
  </tileset>
  <tileset firstgid="202" name="meta" tilewidth="32" tileheight="32">
   <image source="tiles/meta.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="collidable" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="ground" width="30" height="30">
   <data encoding="base64" compression="zlib">

@@ -1,5 +1,7 @@
 package net.davexunit.rpg;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
@@ -18,8 +21,9 @@ import static net.davexunit.rpg.MapActions.*;
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
 	private Texture texture;
+	private Tileset tileset;
 	private Stage uiStage;
-	private Player player;
+	private MapCharacter player;
 	private Map map;
 	private Pathfinder pathfinder;
 	private final int[] underLayers = { 0, 1, 2 };
@@ -70,6 +74,34 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 	}
+	
+	public MapCharacter makeCharacter() {
+		Animation animDown = new Animation(0.15f, tileset.getTileRange(tileset.coordToIndex(0, 2), 3));
+		animDown.setPlayMode(Animation.LOOP_PINGPONG);
+		
+		Animation animUp = new Animation(0.15f, tileset.getTileRange(tileset.coordToIndex(0, 0), 3));
+		animUp.setPlayMode(Animation.LOOP_PINGPONG);
+		
+		Animation animLeft = new Animation(0.15f, tileset.getTileRange(tileset.coordToIndex(0, 1), 3));
+		animLeft.setPlayMode(Animation.LOOP_PINGPONG);
+		
+		Animation animRight = new Animation(0.15f, tileset.getTileRange(tileset.coordToIndex(0, 3), 3));
+		animRight.setPlayMode(Animation.LOOP_PINGPONG);
+		
+		HashMap<String, Animation> animations = new HashMap<String, Animation>();
+		animations.put("walk_down", animDown);
+		animations.put("walk_up", animUp);
+		animations.put("walk_left", animLeft);
+		animations.put("walk_right", animRight);
+		animations.put("stand_down", animDown);
+		animations.put("stand_up", animUp);
+		animations.put("stand_left", animLeft);
+		animations.put("stand_right", animRight);
+		
+		MapCharacter character = new MapCharacter(animations);
+		
+		return character;
+	}
 
 	@Override
 	public void show() {
@@ -87,16 +119,27 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);*/
 		
-		player = new Player(texture);
+		tileset = new Tileset(texture, 40, 46, 0, 0);
+		player = makeCharacter();
 		
 		map = new Map(Gdx.files.internal("data/maps/test2.tmx"), Gdx.files.internal("data/maps"), w, h);
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
 		map.addActor(player);
 		
-		player.warp(4, 10);
+		player.warp(1, 29);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
+		
+		/*Player player2 = new Player(texture);
+		player2.warp(0, 0);
+		map.addActor(player2);
+		
+		Path path = pathfinder.searchPath(player2.getTileX(), player2.getTileY(), 29, 29);
+		
+		if(path != null) {
+			player2.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
+		}*/
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -158,11 +201,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		int tileHeight = map.getTileHeight();
 		int height = map.getHeight();
 		int endX = (int) pos.x / tileWidth;
-		int endY = height - 1 - (int) pos.y / tileHeight;
-		int startX = (int) player.getX() / tileWidth;
-		int startY = height - (int) player.getY() / tileHeight - 1;
+		int endY = height - (int) pos.y / tileHeight - 1;
 		
-		Path path = pathfinder.searchPath(startX, startY, endX, endY);
+		Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY);
 		
 		if(path != null) {
 			player.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));

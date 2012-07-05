@@ -33,14 +33,7 @@ public class MapPathfinderStrategy implements PathfinderStrategy {
 			return;
 		}
 		
-		int tile = map.getMap().layers.get(5).tiles[neighbor.y][neighbor.x];
-		String property = map.getMap().getTileProperty(tile, "collidable");
-		boolean collidable = false;
-		
-		if(property != null)
-			collidable = property.equals("true") ? true: false;
-		
-		if(collidable) {
+		if(map.checkMapCollision(neighbor.x, neighbor.y)) {
 			pool.free(neighbor);
 			return;
 		}
