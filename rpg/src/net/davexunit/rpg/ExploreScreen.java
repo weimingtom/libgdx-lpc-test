@@ -1,11 +1,13 @@
 package net.davexunit.rpg;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -14,7 +16,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import static net.davexunit.rpg.MapActions.*;
 
@@ -29,9 +33,17 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private final int[] underLayers = { 0, 1, 2 };
 	private final int[] overLayers = { 3, 4 };
 	private final float playerSpeed = 6; // tiles per second
-
+	private FPSLogger fps;
+	private FollowPathAction followPathAction;
+	private SequenceAction pathSequence;
+	private Random random;
+	
 	public ExploreScreen(RPG game) {
 		this.game = game;
+		this.fps = new FPSLogger();
+		this.followPathAction = null;
+		this.pathSequence = sequence();
+		this.random = new Random();
 	}
 
 	@Override
@@ -44,6 +56,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 		map.draw();
 		uiStage.draw();
+		fps.log();
 	}
 
 	public void centerCamera() {
@@ -121,24 +134,33 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		tileset = new Tileset(texture, 40, 46, 0, 0);
 		player = makeCharacter();
+		player.setGroup(MapActor.groupPlayer);
+		player.setCollisionGroup(MapActor.groupNPC);
 		
 		map = new Map(Gdx.files.internal("data/maps/test2.tmx"), Gdx.files.internal("data/maps"), w, h);
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
 		map.addActor(player);
 		
-		player.warp(1, 29);
+		player.warp(0, 29);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 		
-		MapCharacter npc = makeCharacter();
-		npc.warp(0, 0);
-		map.addActor(npc);
-		
-		Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), 29, 29);
-		
-		if(path != null) {
-			npc.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
+		// testing a bunch of actors!
+		for(int i = 0; i < 50; ++i) {
+			MapCharacter npc = makeCharacter();
+			npc.setGroup(MapActor.groupNPC);
+			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
+			map.addActor(npc);
+			
+			// Keep attempting warp until it works
+			while(!npc.warp(random.nextInt(map.getWidth()), random.nextInt(map.getHeight())));
+			
+			Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), null);
+			
+			if(path != null) {
+				npc.addAction(followPath(map, pathfinder, path, (float) path.points.size() / playerSpeed));
+			}
 		}
 		
 		uiStage = new Stage(w, h, false);
@@ -203,10 +225,25 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		int endX = (int) pos.x / tileWidth;
 		int endY = height - (int) pos.y / tileHeight - 1;
 		
-		Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY);
+		Path path = null;
+		
+		if(followPathAction != null && followPathAction.getActor() == player) {
+			followPathAction.setStopIndex(followPathAction.getIndex() + 2);
+			Path.Point p = followPathAction.getPath().points.get(followPathAction.getStopIndex() - 1);
+			path = pathfinder.searchPath(p.x, p.y, endX, endY, null);
+		} else {
+			path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
+		}
 		
 		if(path != null) {
-			player.addAction(followPath(map, path, (float) path.points.size() / playerSpeed));
+			followPathAction = followPath(map, pathfinder, path, (float) path.points.size() / playerSpeed);
+			
+			if(pathSequence.getActor() == null) {
+				pathSequence.addAction(followPathAction);
+				player.addAction(pathSequence);
+			} else if(pathSequence.getActor() == player) {
+				pathSequence.addAction(followPathAction);
+			}
 		}
 			
 		return true;

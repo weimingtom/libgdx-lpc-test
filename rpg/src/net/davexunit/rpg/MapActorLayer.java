@@ -26,7 +26,9 @@ public class MapActorLayer {
 			if(actor == other)
 				continue;
 			
-			if((actor.getCollision() ^ other.getCollision()) == 1) {
+			if(x == other.getTileX() &&
+			   y == other.getTileY() && 
+			   (actor.getGroup() & other.getCollisionGroup()) >= 1) {
 				return true;
 			}
 		}

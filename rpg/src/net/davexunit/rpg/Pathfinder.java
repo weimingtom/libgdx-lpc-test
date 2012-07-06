@@ -3,6 +3,7 @@ package net.davexunit.rpg;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class Pathfinder {
@@ -27,7 +28,7 @@ public class Pathfinder {
 		}
 	}
 	
-	public Path searchPath(int startX, int startY, int endX, int endY) {
+	public Path searchPath(int startX, int startY, int endX, int endY, List<Path.Point> ignore) {
 		PathNode start = pathNodePool.obtain(startX, startY);
 		PathNode end = pathNodePool.obtain(endX, endY);
 		
@@ -47,7 +48,7 @@ public class Pathfinder {
 			openList.poll();
 			closedList.put(strategy.nodeHash(current), current);
 			neighbors.clear();
-			strategy.getNeighborNodes(neighbors, pathNodePool, current);
+			strategy.getNeighborNodes(neighbors, pathNodePool, current, ignore);
 			
 			for(PathNode neighbor: neighbors) {
 				if(closedList.containsKey(strategy.nodeHash(neighbor))) {

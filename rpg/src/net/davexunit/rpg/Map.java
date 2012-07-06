@@ -67,7 +67,7 @@ public class Map {
 	}
 	
 	public boolean checkCollision(MapActor actor, int x, int y) {
-		return checkMapCollision(x, y) && checkActorCollision(actor, x, y);
+		return checkMapCollision(x, y) || checkActorCollision(actor, x, y);
 	}
 	
 	public boolean checkMapCollision(int x, int y) {
@@ -99,15 +99,17 @@ public class Map {
 		actors.clear();
 	}
 	
-	public void warpActor(MapActor actor, int tileX, int tileY) {
+	public boolean warpActor(MapActor actor, int tileX, int tileY) {
 		if(actor.getMap() != this)
-			return;
+			return false;
 		
 		if(!checkCollision(actor, tileX, tileY)) {
 			actor.setTilePos(tileX, tileY);
-		} else {
-			// TODO: Fire collision event
+			
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public int getWidth() {

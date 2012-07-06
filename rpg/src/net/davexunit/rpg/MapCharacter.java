@@ -13,11 +13,12 @@ public class MapCharacter extends MapActor {
 	public static final int dirLeft = 3;
 	public static final int dirRight = 4;
 	
-	final HashMap<String, Animation> animations;
-	Animation currentAnimation;
-	float animTime;
-	int direction;
-	boolean walking;
+	private final HashMap<String, Animation> animations;
+	private Animation currentAnimation;
+	private float animTime;
+	private int direction;
+	private boolean walking;
+	private float speed;
 	
 	public MapCharacter(HashMap<String, Animation> animations) {
 		this.animations = new HashMap<String, Animation>(animations);
@@ -97,5 +98,13 @@ public class MapCharacter extends MapActor {
 				setCurrentAnim(animPrefix + "_right");
 				break;
 		}
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(float speed) {
+		this.speed = speed;
 	}
 }

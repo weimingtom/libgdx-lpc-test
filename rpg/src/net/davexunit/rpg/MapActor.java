@@ -4,24 +4,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class MapActor extends Actor {
-	public final int collidePlayer = 1;
-	public final int collideNPC = 2;
+	public static final int groupPlayer = 1;
+	public static final int groupNPC = 2;
 	
 	private Map map;
 	private int tileX;
 	private int tileY;
 	private float offsetX;
 	private float offsetY;
-	private int collision;
+	private int collisionGroup;
+	private int group;
 	
 	public MapActor() {
 		super();
 		
-		this.tileX = 0;
-		this.tileY = 0;
+		this.tileX = -1;
+		this.tileY = -1;
 		this.offsetX = 0;
 		this.offsetY = 0;
-		this.collision = 0;
+		this.collisionGroup = 0;
+		this.group = 0;
 	}
 	
 	@Override
@@ -33,12 +35,20 @@ public abstract class MapActor extends Actor {
 		}
 	}
 
-	public int getCollision() {
-		return collision;
+	public int getCollisionGroup() {
+		return collisionGroup;
 	}
 
-	public void setCollision(int collision) {
-		this.collision = collision;
+	public void setCollisionGroup(int collision) {
+		this.collisionGroup = collision;
+	}
+
+	public int getGroup() {
+		return group;
+	}
+
+	public void setGroup(int group) {
+		this.group = group;
 	}
 
 	public Map getMap() {
@@ -91,14 +101,13 @@ public abstract class MapActor extends Actor {
 		this.offsetY = offsetY;
 	}
 	
-	public void warp(int tileX, int tileY) {
+	public boolean warp(int tileX, int tileY) {
 		if(map == null)
-			return;
+			return false;
 		
 		if(this.tileX == tileX && this.tileY == tileY)
-			return;
+			return true;
 		
-		map.warpActor(this, tileX, tileY);
+		return map.warpActor(this, tileX, tileY);
 	}
-	
 }

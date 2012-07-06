@@ -12,9 +12,10 @@ public class MapActions {
 		return action;
 	}
 	
-	public static FollowPathAction followPath(Map map, Path path, float duration) {
+	public static FollowPathAction followPath(Map map, Pathfinder pathfinder, Path path, float duration) {
 		FollowPathAction action = action(FollowPathAction.class);
 		
+		action.setPathfinder(pathfinder);
 		action.setPath(path);
 		action.setMap(map);
 		action.setDuration(duration);
