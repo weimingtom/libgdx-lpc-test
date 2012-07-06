@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
@@ -26,7 +27,6 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 	Tileset buttonTileset;
 	NinePatch buttonPatchUp;
 	NinePatch buttonPatchDown;
-	TextButton button;
 	TextButtonStyle buttonStyle;
 	
 	public MainMenuScreen(RPG game) {
@@ -48,7 +48,7 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 	}
 
 	@Override
-	public void show() {
+	public void show() {		
 		buttonTileset = new Tileset(new Texture(Gdx.files.internal("data/button.png")), 32, 32, 0, 0);
 		
 		buttonPatchUp = new NinePatch(buttonTileset.getTile(0), 8, 8, 8, 8);
@@ -60,15 +60,50 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		buttonStyle.checked = new NinePatchDrawable(buttonPatchDown);
 		buttonStyle.font = new BitmapFont();
 		
-		button = new TextButton("Play Game", buttonStyle);
-		button.setX(Gdx.graphics.getWidth() / 2 - button.getWidth() / 2);
-		button.setY(Gdx.graphics.getHeight() / 2 - button.getHeight() / 2);
-		button.addListener(new ClickListener() {
+		TextButton continueGame = new TextButton("Continue", buttonStyle);
+		continueGame.addListener(new ClickListener() {
 			@Override
 			public void clicked(ActorEvent event, float x, float y) {
 				game.setScreen(game.exploreScreen);
 			}
 	    });
+		
+		TextButton loadGame = new TextButton("Load Game", buttonStyle);
+		loadGame.addListener(new ClickListener() {
+			@Override
+			public void clicked(ActorEvent event, float x, float y) {
+				game.setScreen(game.exploreScreen);
+			}
+	    });
+		
+		TextButton newGame = new TextButton("New Game", buttonStyle);
+		newGame.addListener(new ClickListener() {
+			@Override
+			public void clicked(ActorEvent event, float x, float y) {
+				game.setScreen(game.exploreScreen);
+			}
+	    });
+		
+		TextButton options = new TextButton("Options", buttonStyle);
+		options.addListener(new ClickListener() {
+			@Override
+			public void clicked(ActorEvent event, float x, float y) {
+				game.setScreen(game.exploreScreen);
+			}
+	    });
+		
+		Table table = new Table();
+		table.setWidth(300);
+		table.setPosition(Gdx.graphics.getWidth() / 2 - table.getWidth() / 2, 150);
+		table.pad(10).defaults().spaceBottom(10);
+		table.row().fill().expandX();
+		table.add(continueGame);
+		table.row().fill().expandX();
+		table.add(loadGame);
+		table.row().fill().expandX();
+		table.add(newGame);
+		table.row().fill().expandX();
+		table.add(options);
 		
 		LabelStyle labelStyle = new LabelStyle();
 		labelStyle.fontColor = Color.BLACK;
@@ -76,10 +111,10 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		
 		Label title = new Label("LPC Test Game", labelStyle);
 		title.setX(Gdx.graphics.getWidth() / 2 - title.getWidth() / 2);
-		title.setY(Gdx.graphics.getHeight() / 2 + 40);
+		title.setY(Gdx.graphics.getHeight() / 2);
 		
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-		stage.addActor(button);
+		stage.addActor(table);
 		stage.addActor(title);
 		
 		input = new InputMultiplexer();

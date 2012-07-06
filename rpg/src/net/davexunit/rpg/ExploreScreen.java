@@ -137,7 +137,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		player.setGroup(MapActor.groupPlayer);
 		player.setCollisionGroup(MapActor.groupNPC);
 		
-		map = new Map(Gdx.files.internal("data/maps/test2.tmx"), Gdx.files.internal("data/maps"), w, h);
+		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
 		map.addActor(player);

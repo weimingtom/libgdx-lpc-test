@@ -100,7 +100,7 @@ public class FollowPathAction extends TemporalAction {
 	protected void findNewPath(Path.Point current) {
 		Path.Point end = path.points.get(getStopIndex() - 1);
 		Path newPath = pathfinder.searchPath(current.x, current.y, end.x, end.y, ignore);
-		System.out.println(newPath);
+		//System.out.println(newPath);
 		setStopIndex(0);
 		setPath(newPath);
 		restart();

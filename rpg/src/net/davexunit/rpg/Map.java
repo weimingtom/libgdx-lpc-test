@@ -2,16 +2,19 @@ package net.davexunit.rpg;
 
 import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.tiled.TileAtlas;
 import com.badlogic.gdx.graphics.g2d.tiled.TileMapRenderer;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
+import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Map {
+	private String name;
 	private Stage stage;
 	private TiledMap map;
 	private TileAtlas tileAtlas;
@@ -29,6 +32,13 @@ public class Map {
 		tileAtlas = new TileAtlas(map, atlasDir);
 		renderer = new TileMapRenderer(map, tileAtlas, map.width, map.height);
 		actors = new MapActorLayer(map.width, map.height);
+		loadObjects();
+	}
+	
+	private void loadObjects() {
+		for(TiledObjectGroup g: map.objectGroups) {
+			Gdx.app.log("map", g.name);
+		}
 	}
 	
 	public void draw() {
@@ -167,5 +177,13 @@ public class Map {
 	
 	public void screenToMapCoordinates(Vector2 pos) {
 		stage.screenToStageCoordinates(pos);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
