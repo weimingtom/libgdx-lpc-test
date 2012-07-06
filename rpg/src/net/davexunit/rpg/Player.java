@@ -1,5 +1,7 @@
 package net.davexunit.rpg;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -12,6 +14,7 @@ public class Player extends Actor {
 	private Tileset tileset;
 	private Animation anim;
 	private float animTime;
+	private Stats mStats;
 	
 	public Player(Texture texture) {
 		tileset = new Tileset(texture, 40, 46, 0, 0);
@@ -30,5 +33,17 @@ public class Player extends Actor {
 	public Actor hit(float x, float y) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public int getStat(String name) {
+		return mStats.getStat(name);
+	}
+	
+	public int turnCost() {
+		return mStats.getMaxStat(name) - mStats.getStat(name);
+	}
+	
+	public boolean isAlive() {
+		return mStats.getStat("HP") > 0;
 	}
 }
