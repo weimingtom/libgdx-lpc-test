@@ -5,42 +5,42 @@ filter: Nearest,Nearest
 repeat: none
 signs
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 signs
   rotate: false
-  xy: 32, 0
+  xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 signs
   rotate: false
-  xy: 64, 0
+  xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 signs
   rotate: false
-  xy: 96, 0
+  xy: 2, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 signs
   rotate: false
-  xy: 0, 32
+  xy: 2, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 signs
   rotate: false
-  xy: 0, 64
+  xy: 36, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

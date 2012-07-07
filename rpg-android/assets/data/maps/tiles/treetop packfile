@@ -5,294 +5,294 @@ filter: Nearest,Nearest
 repeat: none
 treetop
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 41
 treetop
   rotate: false
-  xy: 0, 32
+  xy: 2, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 40
 treetop
   rotate: false
-  xy: 0, 64
+  xy: 2, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 39
 treetop
   rotate: false
-  xy: 0, 96
+  xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 35
 treetop
   rotate: false
-  xy: 32, 0
+  xy: 36, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 34
 treetop
   rotate: false
-  xy: 32, 32
+  xy: 36, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 33
 treetop
   rotate: false
-  xy: 32, 64
+  xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 32
 treetop
   rotate: false
-  xy: 32, 96
+  xy: 70, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 31
 treetop
   rotate: false
-  xy: 64, 0
+  xy: 70, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 30
 treetop
   rotate: false
-  xy: 64, 32
+  xy: 104, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 29
 treetop
   rotate: false
-  xy: 64, 64
+  xy: 104, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 28
 treetop
   rotate: false
-  xy: 64, 96
+  xy: 104, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 27
 treetop
   rotate: false
-  xy: 96, 0
+  xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 26
 treetop
   rotate: false
-  xy: 96, 32
+  xy: 138, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 25
 treetop
   rotate: false
-  xy: 96, 64
+  xy: 138, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 24
 treetop
   rotate: false
-  xy: 96, 96
+  xy: 172, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 23
 treetop
   rotate: false
-  xy: 128, 0
+  xy: 172, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 22
 treetop
   rotate: false
-  xy: 128, 32
+  xy: 172, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 21
 treetop
   rotate: false
-  xy: 128, 32
+  xy: 172, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 36
 treetop
   rotate: false
-  xy: 128, 32
+  xy: 172, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 37
 treetop
   rotate: false
-  xy: 128, 32
+  xy: 172, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 38
 treetop
   rotate: false
-  xy: 128, 64
+  xy: 206, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 20
 treetop
   rotate: false
-  xy: 128, 96
+  xy: 206, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 19
 treetop
   rotate: false
-  xy: 160, 0
+  xy: 206, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 18
 treetop
   rotate: false
-  xy: 160, 32
+  xy: 240, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 17
 treetop
   rotate: false
-  xy: 160, 64
+  xy: 240, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 16
 treetop
   rotate: false
-  xy: 160, 96
+  xy: 240, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 15
 treetop
   rotate: false
-  xy: 192, 0
+  xy: 274, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 14
 treetop
   rotate: false
-  xy: 192, 32
+  xy: 274, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 13
 treetop
   rotate: false
-  xy: 192, 64
+  xy: 274, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 12
 treetop
   rotate: false
-  xy: 192, 96
+  xy: 308, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 11
 treetop
   rotate: false
-  xy: 224, 0
+  xy: 308, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 10
 treetop
   rotate: false
-  xy: 224, 32
+  xy: 308, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 9
 treetop
   rotate: false
-  xy: 224, 64
+  xy: 342, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 8
 treetop
   rotate: false
-  xy: 224, 96
+  xy: 342, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 7
 treetop
   rotate: false
-  xy: 256, 0
+  xy: 342, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 treetop
   rotate: false
-  xy: 256, 32
+  xy: 376, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 treetop
   rotate: false
-  xy: 256, 64
+  xy: 376, 36
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 treetop
   rotate: false
-  xy: 256, 96
+  xy: 376, 70
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 treetop
   rotate: false
-  xy: 288, 0
+  xy: 410, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 treetop
   rotate: false
-  xy: 288, 32
+  xy: 444, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 treetop
   rotate: false
-  xy: 288, 64
+  xy: 478, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

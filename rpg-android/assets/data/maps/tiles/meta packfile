@@ -5,112 +5,112 @@ filter: Nearest,Nearest
 repeat: none
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 3
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 4
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 5
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 6
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 7
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 8
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 9
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 10
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 11
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 12
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 13
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 14
 meta
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 15
 meta
   rotate: false
-  xy: 32, 0
+  xy: 36, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

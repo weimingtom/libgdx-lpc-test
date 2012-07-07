@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.ActorEvent;
@@ -49,7 +48,7 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void show() {		
-		buttonTileset = new Tileset(new Texture(Gdx.files.internal("data/button.png")), 32, 32, 0, 0);
+		buttonTileset = new Tileset(game.atlas.findRegion("button"), 32, 32, 0, 0);
 		
 		buttonPatchUp = new NinePatch(buttonTileset.getTile(0), 8, 8, 8, 8);
 		buttonPatchDown = new NinePatch(buttonTileset.getTile(1), 8, 8, 8, 8);

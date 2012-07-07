@@ -17,7 +17,6 @@
  */
 package net.davexunit.rpg;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Tileset {
@@ -31,13 +30,13 @@ public class Tileset {
 	private int margin;
 	private int spacing;
 	
-	Tileset(Texture texture, int tileWidth, int tileHeight, int margin, int spacing) {
+	Tileset(TextureRegion texture, int tileWidth, int tileHeight, int margin, int spacing) {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.margin = margin;
 		this.spacing = spacing;
-		this.width = (texture.getHeight() - margin) / (tileHeight + spacing);
-		this.height = (texture.getWidth() - margin) / (tileWidth + spacing);
+		this.width = (texture.getRegionHeight() - margin) / (tileHeight + spacing);
+		this.height = (texture.getRegionWidth() - margin) / (tileWidth + spacing);
 		this.tiles = new TextureRegion[width * height];
 		
 		// TextureRegion.split() would've worked just fine but it doesn't support margins or spacing so I wrote this instead.

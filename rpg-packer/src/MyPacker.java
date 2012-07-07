@@ -2,21 +2,22 @@ import java.io.File;
 import java.io.IOException;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.jogl.JoglApplication;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker;
+import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
 import com.badlogic.gdx.tools.imagepacker.TexturePacker.Settings;
 import com.badlogic.gdx.tiledmappacker.TiledMapPacker;
 
 public class MyPacker {
     public static void main (String[] args) throws Exception {
         Settings settings = new Settings();
+        /*
         settings.padding = 0;
         settings.maxWidth = 512;
         settings.maxHeight = 512;
-        settings.incremental = true;
+        settings.incremental = true;*/
         //TexturePacker.process(settings, "data/tiles", "../rpg-android/assets/data");
+    	
+    	TexturePacker2.process("data/sprites", "../rpg-android/assets/data/sprites", "spritepack");
         
 		// Create a new JoglApplication so that Gdx stuff works properly
 		new JoglApplication(new ApplicationListener() {

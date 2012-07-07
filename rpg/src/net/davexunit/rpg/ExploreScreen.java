@@ -9,11 +9,10 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -24,7 +23,7 @@ import static net.davexunit.rpg.MapActions.*;
 
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
-	private Texture texture;
+	private TextureRegion texture;
 	private Tileset tileset;
 	private Stage uiStage;
 	private MapCharacter player;
@@ -121,8 +120,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		texture = new Texture(Gdx.files.internal("data/ghost.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		texture = game.atlas.findRegion("ghost");
 		
 		/*
 		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
@@ -165,7 +163,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		uiStage = new Stage(w, h, false);
 		
-		NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("data/dialogue_box.png")), 32, 16, 32, 16);
+		NinePatch patch = new NinePatch(game.atlas.findRegion("dialogue_box"), 32, 16, 32, 16);
 		
 		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
 		textBoxStyle.background = new NinePatchDrawable(patch);

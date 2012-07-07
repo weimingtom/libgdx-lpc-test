@@ -2,9 +2,13 @@ package net.davexunit.rpg;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class RPG extends Game {
 	private final GameState state;
+	AssetManager manager;
+	TextureAtlas atlas;
 	MainMenuScreen mainMenuScreen;
 	ExploreScreen exploreScreen;
 	
@@ -15,6 +19,11 @@ public class RPG extends Game {
 	@Override
 	public void create() {
 		Gdx.input.setCatchBackKey(true);
+		
+		manager = new AssetManager();
+		manager.load("data/sprites/spritepack.atlas", TextureAtlas.class);
+		
+		atlas = new TextureAtlas("data/sprites/spritepack.atlas");
 		
 		state.setDatabaseHelper(new DummyDatabaseHelper());
 		state.setConfigHelper(new DummyConfigHelper());
