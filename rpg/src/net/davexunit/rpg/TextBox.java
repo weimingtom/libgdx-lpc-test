@@ -12,43 +12,42 @@ import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.tablelayout.Table;
 
-public class TextBox extends Table 
+public class TextBox extends StyledTable
 {
 	private final Label label;
-	private TextBoxStyle style;
-		
+	//protected TextBoxStyle style;
+	
+	public TextBox() {
+		this("");
+	}
+	
 	public TextBox (String text) {
 		this(text, getDefaultTexture());
 	}
 
-	public TextBox (String text, TextBoxStyle style) {
-		super();
+	public TextBox (String text, TableStyle style) {
+		super(style);
 
-		this.style = style;
+		//this.style = style;
 		this.label = new Label(text, new Label.LabelStyle(style.font, style.fontColor));
 		
+		label.x += this.style.padX;
+		label.y -= this.style.padY;
 		label.setAlignment(Align.TOP | Align.LEFT, Align.LEFT);
 		label.setWrap(true);
 	}
 	
-	private static TextBoxStyle getDefaultTexture() {
-		FileHandle handle = Gdx.files.internal("data/dialogue_box.png");
-		if (! handle.exists())
-			return new TextBoxStyle();
-		
-		NinePatch patch = new NinePatch(new Texture(handle), 16, 16, 16, 16);
-		TextBoxStyle textBoxStyle = new TextBoxStyle();
-		textBoxStyle.background = patch;
-		return textBoxStyle;
+	public Label getLabel() {
+		return label;
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		this.setBackground(style.background);
 		validate();
 		super.draw(batch, parentAlpha);
-		label.x = style.padX;
-		label.y = -style.padY;
+		/*label.x = style.padX;
+		label.y = -style.padY;*/
 		label.width = width - style.padX;
 		label.height = height - style.padY;
 		label.draw(batch, parentAlpha);
@@ -63,19 +62,22 @@ public class TextBox extends Table
 		label.setText(text);
 	}
 	
-	public static class TextBoxStyle {
-		public NinePatch background;
-		public BitmapFont font;
-		public Color fontColor;
-		public int padX;
-		public int padY;
-		
-		public TextBoxStyle() {
-			this.background = null;
-			this.font = new BitmapFont(); //default font
-			this.fontColor = new Color(Color.WHITE);
-			this.padX = 0;
-			this.padY = 0;
-		}
+	public void setStyle(TableStyle style) {
+		this.style = style;
+	}
+	
+	public void setXY(float x, float y) {
+		setX(x);
+		setY(y);
+	}
+	
+	public void setX(float x) {
+		this.x = x;
+		this.label.x = x + this.style.padX; 
+	}
+	
+	public void setY(float y) {
+		this.y = y;
+		this.label.y = y - this.style.padY;
 	}
 }

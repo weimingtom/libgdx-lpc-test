@@ -43,10 +43,12 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private TileMapRenderer tileMapRenderer;
 	private OrthographicCamera camera;
 	private Pathfinder pathfinder;
+	private boolean mMenuActive;
 
 	public ExploreScreen(RPG game) {
 		this.game = game;
 		playerSpeed = 250;
+		mMenuActive = false;
 	}
 
 	@Override
@@ -140,7 +142,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		NinePatch patch = new NinePatch(new Texture(Gdx.files.internal("data/dialogue_box.png")), 16, 16, 16, 16);
 		
-		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
+		StyledTable.TableStyle textBoxStyle = new StyledTable.TableStyle();
 		textBoxStyle.background = patch;
 		textBoxStyle.font = new BitmapFont();
 		textBoxStyle.padX = 8;
@@ -159,6 +161,15 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.height = Gdx.graphics.getHeight() / 4;
 		
 		uiStage.addActor(textBox);
+		
+		String [] options = {"Option1", "Option2", "Option3"};
+		textBoxStyle.padY = 0;
+		Menu menu = new Menu(options, textBoxStyle);
+		menu.setWidth(w / 4);
+		menu.setHeight(h / 2);
+		menu.setXY(w - w / 4, h/ 3);
+		
+		uiStage.addActor(menu);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -218,6 +229,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			game.battleScreen.newBattle(player, "grassland");
 			game.setScreen(game.battleScreen);
 			return true;
+		case Input.Keys.M:
+			mMenuActive = ! mMenuActive;
+			return false;
 		}
 
 		return false;

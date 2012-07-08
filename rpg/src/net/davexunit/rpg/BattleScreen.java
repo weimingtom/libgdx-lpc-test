@@ -2,8 +2,6 @@ package net.davexunit.rpg;
 
 import java.util.ArrayList;
 
-import net.davexunit.rpg.TextBox.TextBoxStyle;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
