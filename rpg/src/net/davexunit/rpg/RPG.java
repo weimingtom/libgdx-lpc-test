@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 public class RPG extends Game {
 	MainMenuScreen mainMenuScreen;
 	ExploreScreen exploreScreen;
+	BattleScreen battleScreen;
 	
 	@Override
 	public void create() {
@@ -13,6 +14,7 @@ public class RPG extends Game {
 		
 		exploreScreen = new ExploreScreen(this);
 		mainMenuScreen = new MainMenuScreen(this);
+		battleScreen = new BattleScreen(this);
 		setScreen(exploreScreen);
 	}
 }

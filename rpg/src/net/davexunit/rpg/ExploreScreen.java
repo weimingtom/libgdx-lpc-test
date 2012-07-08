@@ -158,7 +158,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.width = Gdx.graphics.getWidth();
 		textBox.height = Gdx.graphics.getHeight() / 4;
 		
-		//uiStage.addActor(textBox);
+		uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -212,6 +212,11 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		case Input.Keys.BACK:
 		case Input.Keys.ESCAPE:
 			game.setScreen(game.mainMenuScreen);
+			return true;
+		
+		case Input.Keys.B:
+			game.battleScreen.newBattle(player, "grassland");
+			game.setScreen(game.battleScreen);
 			return true;
 		}
 

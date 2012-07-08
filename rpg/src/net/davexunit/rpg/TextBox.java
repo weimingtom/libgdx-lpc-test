@@ -1,6 +1,9 @@
 package net.davexunit.rpg;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +16,11 @@ public class TextBox extends Table
 {
 	private final Label label;
 	private TextBoxStyle style;
-	
+		
+	public TextBox (String text) {
+		this(text, getDefaultTexture());
+	}
+
 	public TextBox (String text, TextBoxStyle style) {
 		super();
 
@@ -22,6 +29,17 @@ public class TextBox extends Table
 		
 		label.setAlignment(Align.TOP | Align.LEFT, Align.LEFT);
 		label.setWrap(true);
+	}
+	
+	private static TextBoxStyle getDefaultTexture() {
+		FileHandle handle = Gdx.files.internal("data/dialogue_box.png");
+		if (! handle.exists())
+			return new TextBoxStyle();
+		
+		NinePatch patch = new NinePatch(new Texture(handle), 16, 16, 16, 16);
+		TextBoxStyle textBoxStyle = new TextBoxStyle();
+		textBoxStyle.background = patch;
+		return textBoxStyle;
 	}
 	
 	@Override
@@ -54,8 +72,8 @@ public class TextBox extends Table
 		
 		public TextBoxStyle() {
 			this.background = null;
-			this.font = null;
-			this.fontColor = null;
+			this.font = new BitmapFont(); //default font
+			this.fontColor = new Color(Color.WHITE);
 			this.padX = 0;
 			this.padY = 0;
 		}
