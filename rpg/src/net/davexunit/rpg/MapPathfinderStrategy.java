@@ -42,10 +42,7 @@ public class MapPathfinderStrategy implements PathfinderStrategy {
 		if(ignore != null) {
 			for(Path.Point p: ignore) {
 				if(neighbor.x == p.x && neighbor.y == p.y)
-				{
-					System.out.println("ignored");
 					return;
-				}
 			}
 		}
 		

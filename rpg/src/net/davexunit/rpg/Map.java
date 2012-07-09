@@ -23,6 +23,7 @@ public class Map {
 	private MapActorLayer actors;
 	private int[] underLayers;
 	private int[] overLayers;
+	private MapListener listener;
 	
 	public Map(FileHandle mapFile, FileHandle atlasDir, float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -31,7 +32,7 @@ public class Map {
 		map = TiledLoader.createMap(mapFile);
 		tileAtlas = new TileAtlas(map, atlasDir);
 		renderer = new TileMapRenderer(map, tileAtlas, map.width, map.height);
-		actors = new MapActorLayer(map.width, map.height);
+		actors = new MapActorLayer();
 		loadObjects();
 	}
 	
@@ -53,6 +54,7 @@ public class Map {
 	}
 	
 	public void dispose() {
+		clearActors();
 		renderer.dispose();
 		tileAtlas.dispose();
 		stage.dispose();
@@ -76,10 +78,6 @@ public class Map {
 		return false;
 	}
 	
-	public boolean checkCollision(MapActor actor, int x, int y) {
-		return checkMapCollision(x, y) || checkActorCollision(actor, x, y);
-	}
-	
 	public boolean checkMapCollision(int x, int y) {
 		int tile = map.layers.get(5).tiles[y][x];
 		String property = map.getTileProperty(tile, "collidable");
@@ -91,7 +89,7 @@ public class Map {
 		return collidable;
 	}
 	
-	public boolean checkActorCollision(MapActor actor, int x, int y) {
+	public MapActor checkActorCollision(MapActor actor, int x, int y) {
 		return actors.checkCollision(actor, x, y);
 	}
 	
@@ -113,8 +111,22 @@ public class Map {
 		if(actor.getMap() != this)
 			return false;
 		
-		if(!checkCollision(actor, tileX, tileY)) {
+		MapActor collideActor = checkActorCollision(actor, tileX, tileY);
+		
+		if(collideActor != null) {
+			if(listener != null)
+				listener.collided(actor, collideActor);
+			
+			return false;
+		}
+		
+		if(!checkMapCollision(tileX, tileY)) {
 			actor.setTilePos(tileX, tileY);
+			
+			for(MapActor overlapActor: actors.get(actor.getTileX(), actor.getTileY())) {
+				if(listener != null && overlapActor != actor)
+					listener.overlapped(actor, overlapActor);
+			}
 			
 			return true;
 		}
@@ -185,5 +197,13 @@ public class Map {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public MapListener getMapListener() {
+		return listener;
+	}
+
+	public void setMapListener(MapListener listener) {
+		this.listener = listener;
 	}
 }

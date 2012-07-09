@@ -5,29 +5,46 @@ filter: Nearest,Nearest
 repeat: none
 scroll
   rotate: false
-  xy: 1, 133
+  xy: 1, 231
   size: 544, 320
   orig: 544, 320
   offset: 0, 0
   index: -1
-dialogue_box
+veggies
   rotate: false
-  xy: 1, 67
+  xy: 1, 101
+  size: 512, 128
+  orig: 512, 128
+  offset: 0, 0
+  index: -1
+dialog-box
+  rotate: false
+  xy: 1, 35
   size: 512, 64
+  split: 28, 30, 8, 7
   orig: 512, 64
   offset: 0, 0
   index: -1
 ghost
   rotate: false
-  xy: 547, 197
+  xy: 547, 295
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-button
+button-up
   rotate: false
   xy: 1, 1
-  size: 64, 64
-  orig: 64, 64
+  size: 32, 32
+  split: 4, 4, 4, 4
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 547, 261
+  size: 32, 32
+  split: 4, 4, 4, 4
+  orig: 32, 32
   offset: 0, 0
   index: -1

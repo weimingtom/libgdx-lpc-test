@@ -34,9 +34,10 @@ public class FollowPathAction extends TemporalAction {
 			
 			if(1 < path.points.size()) {
 				Path.Point p2 = path.points.get(1);
-				if(map.checkActorCollision(mapCharacter, p2.x, p2.y)) {
-					ignore.add(new Path.Point(p2.x, p2.y));
-					findNewPath(new Path.Point(mapCharacter.getTileX(), mapCharacter.getTileY()));
+				if(map.checkActorCollision(mapCharacter, p2.x, p2.y) != null) {
+					//ignore.add(new Path.Point(p2.x, p2.y));
+					//findNewPath(new Path.Point(mapCharacter.getTileX(), mapCharacter.getTileY()));
+					setStopIndex(1);
 				}
 			}
 		} else
@@ -74,16 +75,20 @@ public class FollowPathAction extends TemporalAction {
 	
 			// Recalculate path if next tile is blocked by an actor
 			if((current.x != mapCharacter.getTileX() || current.y != mapCharacter.getTileY())) {
-				if(map.checkActorCollision(mapCharacter, next.x, next.y)) {
-					ignore.add(new Path.Point(next.x, next.y));
-					findNewPath(current);
+				if(map.checkActorCollision(mapCharacter, next.x, next.y) != null) {
+					//ignore.add(new Path.Point(next.x, next.y));
+					//findNewPath(current);
+					setStopIndex(index + 1);
 					return;
 				}
 			}
 			
 			// Set position
-			mapCharacter.warp(current.x, current.y);
-			mapCharacter.setOffset(dx * tileDelta, dy * tileDelta);
+			if(!mapCharacter.warp(current.x, current.y)) {
+				setStopIndex(index);
+				return;
+			}
+			mapCharacter.setOffset(-dx * tileDelta, -dy * tileDelta);
 			
 			// Update animation
 			if(dy > 0)

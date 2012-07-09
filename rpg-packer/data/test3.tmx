@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="grass" tilewidth="32" tileheight="32">
+  <image source="tiles/grass.png" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="19" name="dirt" tilewidth="32" tileheight="32">
+  <image source="tiles/dirt.png" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="37" name="hole" tilewidth="32" tileheight="32">
+  <image source="tiles/hole.png" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="55" name="house" tilewidth="32" tileheight="32">
+  <image source="tiles/house.png" width="288" height="224"/>
+ </tileset>
+ <tileset firstgid="118" name="water" tilewidth="32" tileheight="32">
+  <image source="tiles/water.png" width="96" height="192"/>
+ </tileset>
+ <tileset firstgid="136" name="treetop" tilewidth="32" tileheight="32">
+  <image source="tiles/treetop.png" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="178" name="trunk" tilewidth="32" tileheight="32">
+  <image source="tiles/trunk.png" width="192" height="96"/>
+ </tileset>
+ <tileset firstgid="196" name="signs" tilewidth="32" tileheight="32">
+  <image source="tiles/signs.png" width="96" height="64"/>
+ </tileset>
+ <tileset firstgid="202" name="meta" tilewidth="32" tileheight="32">
+  <image source="tiles/meta.png" width="128" height="128"/>
+  <tile id="0">
+   <properties>
+    <property name="collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="ground" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzVl70OgCAMhNl9Bhdh9/3fzomEEFqvvap1uEFN+bj+ENlLKfvLOqbnKrxfqSrr/FWVjPHEZ/LWhJpm9mX17ulVLT4iN8wantimfDsHMZ40hsRj2Na6olxvbVZxEjMi3x6vmbg9X2jfeLns2ujsdLF+Vn2d5TxGZk7yP3rYACH7sfy/oFzrHqKZEWwv846r9TbDZPxGcT0z9oXfp/sKmSULL+KukOX8i9Ts6QJRGWHp
+  </data>
+ </layer>
+ <layer name="fringe" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzdlmEKgzAMhcXhNoduPwSPMHBTmdv977YUFENYu9ikFfrgQam2X56WkixLQ+3eBShIM0MK3yN1NXsXQPQE98hDJN6DzHeB2aPj2SsQ02SlObFCZXZlXWTL7Hs+WyFXUos21yVc0z/uHfxR4mLZuIb3JkzN+2aa96femvEEPjNcqlS96sJ8r1CswWQ9eqwrBGxf5qIKjRvLWJtJuVxx/2kq3Bp8iMjFPaWU/YvL7Vl92Dn4Cr5tXEfPeT3vwzXlSe7gGP3iF4KlCc0=
+  </data>
+ </layer>
+ <layer name="fringe2" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0rENACAIBVH3H0ct1EIdzd9Y04CJyb3kWiggJQAAAFxZFVUfz22qq+G815o71VLbeW/U3N9E/ZMl6p8s3P0/B8nzE4Q=
+  </data>
+ </layer>
+ <layer name="over" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0jEOABAMRmH3x4ABt/VfQLqokLwveWs7tCEAAADsRZVUvjy3qKra4b3W3K6Gmof3es39jdc/Wbz+ycLd8boFfFMPZw==
+  </data>
+ </layer>
+ <layer name="over2" width="30" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgiD/r25IQAEAAPBoDhAAAQ==
+  </data>
+ </layer>
+ <layer name="collision" width="30" height="30" opacity="0.62">
+  <data encoding="base64" compression="zlib">
+   eJzt0MEJAEAIA8H0X5pV2cDBvTRIdiFfB5SIiKR6bNvbsB3uz5yycXEncniOu2luSq4/pLl0qwbItUvB
+  </data>
+ </layer>
+ <objectgroup name="actors" width="30" height="30" visible="0"/>
+</map>

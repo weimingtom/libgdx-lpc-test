@@ -4,24 +4,12 @@ import java.util.LinkedList;
 
 public class MapActorLayer {
 	private LinkedList<MapActor> actors;
-	private int width;
-	private int height;
 	
-	public MapActorLayer(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public MapActorLayer() {
 		this.actors = new LinkedList<MapActor>();
 	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public boolean checkCollision(MapActor actor, int x, int y) {
+
+	public MapActor checkCollision(MapActor actor, int x, int y) {
 		for(MapActor other: actors) {
 			if(actor == other)
 				continue;
@@ -29,11 +17,11 @@ public class MapActorLayer {
 			if(x == other.getTileX() &&
 			   y == other.getTileY() && 
 			   (actor.getGroup() & other.getCollisionGroup()) >= 1) {
-				return true;
+				return actor;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 	
 	public LinkedList<MapActor> get(int x, int y) {
@@ -62,6 +50,9 @@ public class MapActorLayer {
 	}
 	
 	public void clear() {
+		for(MapActor actor: actors)
+			actor.setMap(null);
+				
 		actors.clear();
 	}
 }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ActorEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,6 +24,7 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 	RPG game;
 	InputMultiplexer input;
 	Stage stage;
+	TextureAtlas atlas;
 	Tileset buttonTileset;
 	NinePatch buttonPatchUp;
 	NinePatch buttonPatchDown;
@@ -42,16 +44,14 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void show() {		
-		buttonTileset = new Tileset(game.atlas.findRegion("button"), 32, 32, 0, 0);
+	public void show() {
+		atlas = game.manager.get("data/sprites/spritepack.atlas", TextureAtlas.class);
 		
-		buttonPatchUp = new NinePatch(buttonTileset.getTile(0), 8, 8, 8, 8);
-		buttonPatchDown = new NinePatch(buttonTileset.getTile(1), 8, 8, 8, 8);
+		buttonPatchUp = atlas.createPatch("button-up");
+		buttonPatchDown = atlas.createPatch("button-down");
 		
 		buttonStyle = new TextButtonStyle();
 		buttonStyle.up = new NinePatchDrawable(buttonPatchUp);
@@ -124,26 +124,19 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		stage.dispose();
 	}
 	
 	@Override
@@ -157,5 +150,4 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		
 		return false;
 	}
-
 }

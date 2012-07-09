@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,6 +24,7 @@ import static net.davexunit.rpg.MapActions.*;
 
 public class ExploreScreen extends InputAdapter implements Screen {
 	private RPG game;
+	private TextureAtlas atlas;
 	private TextureRegion texture;
 	private Tileset tileset;
 	private Stage uiStage;
@@ -84,7 +86,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 	}
 	
 	public MapCharacter makeCharacter() {
@@ -111,6 +112,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		animations.put("stand_right", animRight);
 		
 		MapCharacter character = new MapCharacter(animations);
+		character.setGroup(MapActor.groupPlayer);
+		character.setCollisionGroup(MapActor.groupNPC);
 		
 		return character;
 	}
@@ -120,32 +123,53 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		texture = game.atlas.findRegion("ghost");
-		
-		/*
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);*/
+		atlas = game.manager.get("data/sprites/spritepack.atlas", TextureAtlas.class);
+		texture = atlas.findRegion("ghost");
 		
 		tileset = new Tileset(texture, 40, 46, 0, 0);
 		player = makeCharacter();
-		player.setGroup(MapActor.groupPlayer);
-		player.setCollisionGroup(MapActor.groupNPC);
+		
+		Door door = new Door();
+		door.setMapFile("data/maps/test3.tmx");
+		door.setTilePos(9, 15);
 		
 		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
 		map.addActor(player);
+		map.addActor(door);
+		map.setMapListener(new MapListener() {
+			@Override
+			public void collided(MapActor actor1, MapActor actor2) {
+				//System.out.println("Collision!");
+			}
+
+			@Override
+			public void overlapped(MapActor actor1, MapActor actor2) {
+				if(actor1 == player && actor2 instanceof Door) {
+					float w = Gdx.graphics.getWidth();
+					float h = Gdx.graphics.getHeight();
+					Door door = (Door) actor2;
+					map.dispose();
+					map = new Map(Gdx.files.internal(door.getMapFile()), Gdx.files.internal("data/maps"), w, h);
+					map.setUnderLayers(underLayers);
+					map.setOverLayers(overLayers);
+					player = makeCharacter();
+					map.addActor(player);
+					player.warp(0, 29);
+					pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
+					followPathAction = null;
+					pathSequence = sequence();
+				}
+			}
+		});
 		
-		player.warp(0, 29);
+		player.warp(9, 16);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 		
 		// testing a bunch of actors!
-		for(int i = 0; i < 50; ++i) {
+		for(int i = 0; i < 30; ++i) {
 			MapCharacter npc = makeCharacter();
 			npc.setGroup(MapActor.groupNPC);
 			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
@@ -163,7 +187,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		uiStage = new Stage(w, h, false);
 		
-		NinePatch patch = new NinePatch(game.atlas.findRegion("dialogue_box"), 32, 16, 32, 16);
+		NinePatch patch = atlas.createPatch("dialog-box");
 		
 		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
 		textBoxStyle.background = new NinePatchDrawable(patch);
@@ -190,20 +214,14 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
