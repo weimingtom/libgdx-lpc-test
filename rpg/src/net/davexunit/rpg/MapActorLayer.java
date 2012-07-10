@@ -24,7 +24,7 @@ public class MapActorLayer {
 		return null;
 	}
 	
-	public LinkedList<MapActor> get(int x, int y) {
+	public LinkedList<MapActor> getAll(int x, int y) {
 		LinkedList<MapActor> list = new LinkedList<MapActor>();
 		
 		for(MapActor actor: actors) {
@@ -33,6 +33,15 @@ public class MapActorLayer {
 		}
 		
 		return list;
+	}
+	
+	public MapActor getFirst(int x, int y) {
+		for(MapActor actor: actors) {
+			if(actor.getTileX() == x && actor.getTileY() == y)
+				return actor;
+		}
+		
+		return null;
 	}
 	
 	public boolean add(MapActor actor) {

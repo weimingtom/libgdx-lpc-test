@@ -104,8 +104,12 @@ public class Map {
 		return actors.checkCollision(actor, x, y);
 	}
 	
-	public LinkedList<MapActor> getActor(int x, int y) {
-		return actors.get(x, y);
+	public LinkedList<MapActor> getActors(int x, int y) {
+		return actors.getAll(x, y);
+	}
+	
+	public MapActor getFirstActor(int x, int y) {
+		return actors.getFirst(x, y);
 	}
 	
 	public void removeActor(MapActor actor) {
@@ -138,7 +142,7 @@ public class Map {
 			actor.setTilePos(tileX, tileY);
 			stageDirty = true;
 			
-			for(MapActor overlapActor: actors.get(actor.getTileX(), actor.getTileY())) {
+			for(MapActor overlapActor: actors.getAll(actor.getTileX(), actor.getTileY())) {
 				if(listener != null && overlapActor != actor)
 					listener.overlapped(actor, overlapActor);
 			}

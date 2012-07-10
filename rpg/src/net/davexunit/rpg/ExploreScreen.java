@@ -36,6 +36,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private FollowPathAction followPathAction;
 	private Random random;
 	private MapWalkAction walkAction;
+	private TextBox.TextBoxStyle textBoxStyle; 
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -130,11 +131,15 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		Door door = new Door();
 		door.setMapFile("data/maps/test3.tmx");
 		
+		Sign sign = new Sign();
+		sign.setText("Hello, world!");
+		
 		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
 		map.addActor(player);
 		map.addActor(door);
+		map.addActor(sign);
 		map.setMapListener(new MapListener() {
 			@Override
 			public void collided(MapActor actor1, MapActor actor2) {
@@ -163,8 +168,11 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			}
 		});
 
+		sign.warp(8, 15);
 		door.warp(9, 15);
-		player.warp(9, 14);
+		player.warp(9, 16);
+		
+		Gdx.app.log("interact", sign.getTileX() + ", " + sign.getTileY());
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 
@@ -194,7 +202,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		NinePatch patch = atlas.createPatch("dialog-box");
 		
-		TextBox.TextBoxStyle textBoxStyle = new TextBox.TextBoxStyle();
+		textBoxStyle = new TextBox.TextBoxStyle();
 		textBoxStyle.background = new NinePatchDrawable(patch);
 		textBoxStyle.font = new BitmapFont();
 		textBoxStyle.padX = 8;
@@ -215,6 +223,47 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		//uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
+	}
+	
+	private void interact() {
+		MapActor actor = null;
+		int tileX = player.getTileX();
+		int tileY = player.getTileY();
+		
+		switch(player.getDirection()) {
+		case MapCharacter.dirUp:
+			Gdx.app.log("interact", "UP!");
+			actor = map.getFirstActor(tileX, tileY - 1);
+			break;
+
+		case MapCharacter.dirDown:
+			actor = map.getFirstActor(tileX, tileY + 1);
+			break;
+
+		case MapCharacter.dirLeft:
+			actor = map.getFirstActor(tileX - 1, tileY);
+			break;
+
+		case MapCharacter.dirRight:
+			actor = map.getFirstActor(tileX + 1, tileY);
+			break;
+			
+		}
+		
+		if(actor == null)
+			return;
+		
+		Gdx.app.log("interact", "not null");
+		
+		if(actor instanceof Sign) {
+			Gdx.app.log("interact", "SIGN!");
+			Sign sign = (Sign) actor;
+			
+			TextBox dialog = new TextBox(sign.getText(), textBoxStyle);
+			dialog.setWidth(Gdx.graphics.getWidth());
+			dialog.setHeight(Gdx.graphics.getHeight() / 4);
+			uiStage.addActor(dialog);
+		}
 	}
 
 	@Override
@@ -249,28 +298,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
 		
 		if(path != null) {
-			//followPathAction = followPath(pathfinder, path, playerSpeed);
 			followPathAction.setPath(path);
 		}
-		
-		/*if(followPathAction != null && followPathAction.getActor() == player) {
-			followPathAction.setStopIndex(followPathAction.getIndex() + 2);
-			Path.Point p = followPathAction.getPath().points.get(followPathAction.getStopIndex() - 1);
-			path = pathfinder.searchPath(p.x, p.y, endX, endY, null);
-		} else {
-			path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
-		}
-		
-		if(path != null) {
-			followPathAction = followPath(map, pathfinder, path, (float) path.points.size() / playerSpeed);
-			
-			if(pathSequence.getActor() == null) {
-				pathSequence.addAction(followPathAction);
-				player.addAction(pathSequence);
-			} else if(pathSequence.getActor() == player) {
-				pathSequence.addAction(followPathAction);
-			}
-		}*/
 			
 		return true;
 	}
@@ -284,6 +313,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		case Input.Keys.DPAD_RIGHT:
 			updateMovement();
 			break;
+		case Input.Keys.Z:
+			interact();
 		}
 
 		return false;

@@ -29,8 +29,6 @@ public class MapCharacter extends MapActor {
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		
 		animTime += Gdx.graphics.getDeltaTime();
 		
 		if(currentAnimation != null)
