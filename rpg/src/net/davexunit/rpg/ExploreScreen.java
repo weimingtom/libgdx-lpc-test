@@ -33,11 +33,12 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Pathfinder pathfinder;
 	private final int[] underLayers = { 0, 1, 2 };
 	private final int[] overLayers = { 3, 4 };
-	private final float playerSpeed = 6; // tiles per second
+	private final float playerSpeed = 7; // tiles per second
 	private FPSLogger fps;
 	private FollowPathAction followPathAction;
 	private SequenceAction pathSequence;
 	private Random random;
+	private MapWalkAction walkAction;
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -45,6 +46,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		this.followPathAction = null;
 		this.pathSequence = sequence();
 		this.random = new Random();
+		this.walkAction = null;
 	}
 
 	@Override
@@ -131,7 +133,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		Door door = new Door();
 		door.setMapFile("data/maps/test3.tmx");
-		door.setTilePos(9, 15);
+		door.warp(9, 15);
 		
 		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
@@ -164,26 +166,29 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			}
 		});
 		
-		player.warp(9, 16);
+		player.warp(0, 0);
+		
+		walkAction = mapWalk(0, playerSpeed);
+		player.addAction(walkAction);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 		
 		// testing a bunch of actors!
-		for(int i = 0; i < 30; ++i) {
+		/*for(int i = 0; i < 30; ++i) {
 			MapCharacter npc = makeCharacter();
 			npc.setGroup(MapActor.groupNPC);
 			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
 			map.addActor(npc);
 			
 			// Keep attempting warp until it works
-			while(!npc.warp(random.nextInt(map.getWidth()), random.nextInt(map.getHeight())));
+			while(!npc.move(random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), 0, 0));
 			
 			Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), null);
 			
 			if(path != null) {
 				npc.addAction(followPath(map, pathfinder, path, (float) path.points.size() / playerSpeed));
 			}
-		}
+		}*/
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -266,12 +271,55 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	}
 
 	@Override
+	public boolean keyDown(int keycode) {
+		switch (keycode) {
+		case Input.Keys.DPAD_UP:
+			walkAction.setDirection(MapWalkAction.dirUp);
+			break;
+			
+		case Input.Keys.DPAD_DOWN:
+			walkAction.setDirection(MapWalkAction.dirDown);
+			break;
+			
+		case Input.Keys.DPAD_LEFT:
+			walkAction.setDirection(MapWalkAction.dirLeft);
+			break;
+			
+		case Input.Keys.DPAD_RIGHT:
+			walkAction.setDirection(MapWalkAction.dirRight);
+			break;
+		}
+
+		return false;
+	}
+	
+	@Override
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
 		case Input.Keys.BACK:
 		case Input.Keys.ESCAPE:
 			game.setScreen(game.mainMenuScreen);
 			return true;
+		
+		case Input.Keys.DPAD_UP:
+			if(walkAction.getDirection() == MapWalkAction.dirUp)
+				walkAction.setDirection(0);
+			break;
+			
+		case Input.Keys.DPAD_DOWN:
+			if(walkAction.getDirection() == MapWalkAction.dirDown)
+				walkAction.setDirection(0);
+			break;
+			
+		case Input.Keys.DPAD_LEFT:
+			if(walkAction.getDirection() == MapWalkAction.dirLeft)
+				walkAction.setDirection(0);
+			break;
+			
+		case Input.Keys.DPAD_RIGHT:
+			if(walkAction.getDirection() == MapWalkAction.dirRight)
+				walkAction.setDirection(0);
+			break;
 		}
 
 		return false;

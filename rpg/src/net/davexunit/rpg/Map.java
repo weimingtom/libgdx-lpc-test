@@ -107,8 +107,11 @@ public class Map {
 		actors.clear();
 	}
 	
-	public boolean warpActor(MapActor actor, int tileX, int tileY) {
+	public boolean moveActor(MapActor actor, int tileX, int tileY) {
 		if(actor.getMap() != this)
+			return false;
+		
+		if(tileX < 0 || tileX >= map.width || tileY < 0 || tileY >= map.height)
 			return false;
 		
 		MapActor collideActor = checkActorCollision(actor, tileX, tileY);
@@ -122,12 +125,24 @@ public class Map {
 		
 		if(!checkMapCollision(tileX, tileY)) {
 			actor.setTilePos(tileX, tileY);
+			//System.out.println(offsetX + ", " + offsetY);
+			//actor.setPosition(((float) tileX + offsetX) * map.tileWidth,
+			//		          getMapHeightUnits() - ((float) tileY + offsetY) * map.tileHeight - map.tileHeight);
 			
 			for(MapActor overlapActor: actors.get(actor.getTileX(), actor.getTileY())) {
 				if(listener != null && overlapActor != actor)
 					listener.overlapped(actor, overlapActor);
 			}
 			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean warpActor(MapActor actor, int tileX, int tileY) {
+		if(moveActor(actor, tileX, tileY)) {
+			actor.setPosition(tileX * map.tileWidth, getMapHeightUnits() - tileY * map.tileHeight - map.tileHeight);
 			return true;
 		}
 		

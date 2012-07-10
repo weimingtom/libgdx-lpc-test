@@ -1,33 +1,62 @@
 package net.davexunit.rpg;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.RelativeTemporalAction;
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 
-public class MapMoveByAction extends RelativeTemporalAction {
-	public static final int dirUp = 1;
-	public static final int dirDown = 2;
-	public static final int dirLeft = 3;
-	public static final int dirRight = 4;
+public class MapMoveByAction extends TemporalAction {
+	private int startX, startY;
+	private float amountX, amountY;
+	private MapActor mapActor;
 	
-	private int direction;
-	private int tileX, tileY;
-	
-	@Override
-	protected void updateRelative(float percent) {
+	public MapMoveByAction() {
+		super();
 		
-	}
-
-	public int getDirection() {
-		return direction;
-	}
-
-	public void setDirection(int direction) {
-		this.direction = direction;
+		mapActor = null;
 	}
 
 	@Override
-	public void setActor(Actor actor) {
-		// TODO Auto-generated method stub
-		super.setActor(actor);
+	protected void initialize() {
+		if(!(actor instanceof MapActor))
+			return;
+		
+		mapActor = (MapActor) actor;
+		
+		startX = mapActor.getTileX();
+		startY = mapActor.getTileY();
+	}
+
+	@Override
+	protected void update(float percent) {
+		if(mapActor == null)
+			return;
+		
+		float px = amountX * percent;
+		float py = amountY * percent;
+		int tileX = startX + (int) px;
+		int tileY = startY + (int) py;
+		float offsetX = -px;
+		float offsetY = -py;
+		
+		mapActor.move(tileX, tileY);
+	}
+	
+	public float getAmountX() {
+		return amountX;
+	}
+
+	public void setAmountX(float amountX) {
+		this.amountX = amountX;
+	}
+
+	public float getAmountY() {
+		return amountY;
+	}
+
+	public void setAmountY(float amountY) {
+		this.amountY = amountY;
+	}
+	
+	public void setAmount(float amountX, float amountY) {
+		this.amountX = amountX;
+		this.amountY = amountY;
 	}
 }

@@ -29,7 +29,7 @@ public class FollowPathAction extends TemporalAction {
 			Path.Point p = path.points.get(0);
 			
 			mapCharacter.warp(p.x, p.y);
-			mapCharacter.setOffset(0, 0);
+			//mapCharacter.setOffset(0, 0);
 			mapCharacter.setWalking(true);
 			
 			if(1 < path.points.size()) {
@@ -55,7 +55,7 @@ public class FollowPathAction extends TemporalAction {
 				Path.Point p = path.points.get(stop - 1);
 				
 				mapCharacter.warp(p.x, p.y);
-				mapCharacter.setOffset(0, 0);
+				//mapCharacter.setOffset(0, 0);
 				mapCharacter.setWalking(false);
 			 	
 				return;
@@ -84,11 +84,12 @@ public class FollowPathAction extends TemporalAction {
 			}
 			
 			// Set position
-			if(!mapCharacter.warp(current.x, current.y)) {
+			//if(!mapCharacter.move(current.x, current.y, dx * tileDelta, dy * tileDelta)) {
+			if(!mapCharacter.warp(current.x, current.y)) { 
 				setStopIndex(index);
 				return;
 			}
-			mapCharacter.setOffset(-dx * tileDelta, -dy * tileDelta);
+			//mapCharacter.setOffset(-dx * tileDelta, -dy * tileDelta);
 			
 			// Update animation
 			if(dy > 0)

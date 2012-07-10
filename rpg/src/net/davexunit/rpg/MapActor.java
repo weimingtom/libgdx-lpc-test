@@ -1,6 +1,5 @@
 package net.davexunit.rpg;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class MapActor extends Actor {
@@ -10,8 +9,6 @@ public abstract class MapActor extends Actor {
 	private Map map;
 	private int tileX;
 	private int tileY;
-	private float offsetX;
-	private float offsetY;
 	private int collisionGroup;
 	private int group;
 	
@@ -20,19 +17,8 @@ public abstract class MapActor extends Actor {
 		
 		this.tileX = -1;
 		this.tileY = -1;
-		this.offsetX = 0;
-		this.offsetY = 0;
 		this.collisionGroup = 0;
 		this.group = 0;
-	}
-	
-	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-		if(map != null) {
-			float x = (tileX + offsetX) * map.getTileWidth();
-			float y = map.getMapHeightUnits() - (tileY + offsetY) * map.getTileHeight() - map.getTileHeight();
-			setPosition(x, y);
-		}
 	}
 
 	public int getCollisionGroup() {
@@ -79,34 +65,17 @@ public abstract class MapActor extends Actor {
 		this.tileX = tileX;
 		this.tileY = tileY;
 	}
-
-	public float getOffsetX() {
-		return offsetX;
-	}
-
-	public void setOffsetX(float offsetX) {
-		this.offsetX = offsetX;
-	}
-
-	public float getOffsetY() {
-		return offsetY;
-	}
-
-	public void setOffsetY(float offsetY) {
-		this.offsetY = offsetY;
-	}
-
-	public void setOffset(float offsetX, float offsetY) {
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+	
+	public boolean move(int tileX, int tileY) {
+		if(map == null)
+			return false;
+		
+		return map.moveActor(this, tileX, tileY);
 	}
 	
 	public boolean warp(int tileX, int tileY) {
 		if(map == null)
 			return false;
-		
-		if(this.tileX == tileX && this.tileY == tileY)
-			return true;
 		
 		return map.warpActor(this, tileX, tileY);
 	}

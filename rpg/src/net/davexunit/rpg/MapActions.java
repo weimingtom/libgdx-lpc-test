@@ -22,4 +22,22 @@ public class MapActions {
 		
 		return action;
 	}
+	
+	public static MapMoveByAction mapMoveBy(float amountX, float amountY, float duration) {
+		MapMoveByAction action = action(MapMoveByAction.class);
+		
+		action.setAmount(amountX, amountY);
+		action.setDuration(duration);
+		
+		return action;
+	}
+	
+	public static MapWalkAction mapWalk(int direction, float speed) {
+		MapWalkAction action = action(MapWalkAction.class);
+		
+		action.setDirection(direction);
+		action.setSpeed(speed);
+		
+		return action;
+	}
 }
