@@ -1,6 +1,6 @@
 package net.davexunit.rpg;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import java.util.LinkedList;
 
@@ -70,12 +70,18 @@ public class FollowPathAction extends Action {
 		}
 		
 		Path.Point next = path.points.get(index);
-		Path.Point current = path.points.get(index - 1);
+		
+		mapActor.moved(next.x, next.y);
 		
 		if(mapActor.move(next.x, next.y)) {
-			int tileWidth = mapActor.getMap().getTileWidth();
-			int tileHeight = mapActor.getMap().getTileHeight();
-			mapActor.addAction(moveBy((next.x - current.x) * tileWidth, (current.y - next.y) * tileHeight, duration));
+			Map map = mapActor.getMap();
+			
+			if(map != null) {
+				int tileWidth = mapActor.getMap().getTileWidth();
+				int tileHeight = mapActor.getMap().getTileHeight();
+				int height = mapActor.getMap().getMapHeightUnits();
+				mapActor.addAction(moveTo(next.x * tileWidth, height - next.y * tileHeight - tileHeight, duration));
+			}
 		} else {
 			ignore.add(next);
 			findNewPath();

@@ -37,6 +37,32 @@ public class MapCharacter extends MapActor {
 			batch.draw(currentAnimation.getKeyFrame(animTime), getX(), getY());
 	}
 	
+	@Override
+	public void moved(int tileX, int tileY) {
+		int dx = tileX - getTileX();
+		int dy = tileY - getTileY();
+		
+		if(dy > 0) {
+			setDirection(dirDown);
+		} else if(dy < 0) {
+			setDirection(dirUp);
+		} else if(dx > 0) {
+			setDirection(dirRight);
+		} else if(dx < 0) {
+			setDirection(dirLeft);
+		}
+	}
+
+	@Override
+	public void moveStarted() {
+		setWalking(true);
+	}
+
+	@Override
+	public void moveStopped() {
+		setWalking(false);
+	}
+
 	public HashMap<String, Animation> getAnimations() {
 		return animations;
 	}

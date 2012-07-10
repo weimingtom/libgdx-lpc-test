@@ -1,5 +1,6 @@
 package net.davexunit.rpg;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.tiled.TiledLoader;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledMap;
 import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Map {
@@ -24,6 +26,8 @@ public class Map {
 	private int[] underLayers;
 	private int[] overLayers;
 	private MapListener listener;
+	private MapActorComparator actorComparator;
+	private boolean stageDirty;
 	
 	public Map(FileHandle mapFile, FileHandle atlasDir, float viewportWidth, float viewportHeight) {
 		camera = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -33,6 +37,8 @@ public class Map {
 		tileAtlas = new TileAtlas(map, atlasDir);
 		renderer = new TileMapRenderer(map, tileAtlas, map.width, map.height);
 		actors = new MapActorLayer();
+		actorComparator = new MapActorComparator();
+		stageDirty = false;
 		loadObjects();
 	}
 	
@@ -43,6 +49,11 @@ public class Map {
 	}
 	
 	public void draw() {
+		if(stageDirty) {
+			stage.getActors().sort(actorComparator);
+			stageDirty = false;
+		}
+		
 		if(underLayers == null || overLayers == null) {
 			renderer.render();
 			stage.draw();
@@ -125,9 +136,7 @@ public class Map {
 		
 		if(!checkMapCollision(tileX, tileY)) {
 			actor.setTilePos(tileX, tileY);
-			//System.out.println(offsetX + ", " + offsetY);
-			//actor.setPosition(((float) tileX + offsetX) * map.tileWidth,
-			//		          getMapHeightUnits() - ((float) tileY + offsetY) * map.tileHeight - map.tileHeight);
+			stageDirty = true;
 			
 			for(MapActor overlapActor: actors.get(actor.getTileX(), actor.getTileY())) {
 				if(listener != null && overlapActor != actor)
@@ -220,5 +229,15 @@ public class Map {
 
 	public void setMapListener(MapListener listener) {
 		this.listener = listener;
+	}
+	
+	private static class MapActorComparator implements Comparator<Actor> {
+		@Override
+		public int compare(Actor arg0, Actor arg1) {
+			MapActor actor0 = (MapActor) arg0;
+			MapActor actor1 = (MapActor) arg1;
+			return (int) (actor0.getTileY() - actor1.getTileY());
+		}
+		
 	}
 }

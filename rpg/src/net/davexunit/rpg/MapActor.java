@@ -79,4 +79,16 @@ public abstract class MapActor extends Actor {
 		
 		return map.warpActor(this, tileX, tileY);
 	}
+	
+	public void moved(int tileX, int tileY) {
+		
+	}
+	
+	public void moveStarted() {
+		
+	}
+	
+	public void moveStopped() {
+		
+	}
 }

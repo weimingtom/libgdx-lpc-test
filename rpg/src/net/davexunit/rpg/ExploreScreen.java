@@ -16,9 +16,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 import static net.davexunit.rpg.MapActions.*;
 
@@ -33,10 +31,9 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Pathfinder pathfinder;
 	private final int[] underLayers = { 0, 1, 2 };
 	private final int[] overLayers = { 3, 4 };
-	private final float playerSpeed = 7; // tiles per second
+	private final float playerSpeed = 6.5f; // tiles per second
 	private FPSLogger fps;
 	private FollowPathAction followPathAction;
-	private SequenceAction pathSequence;
 	private Random random;
 	private MapWalkAction walkAction;
 	
@@ -44,7 +41,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		this.game = game;
 		this.fps = new FPSLogger();
 		this.followPathAction = null;
-		this.pathSequence = sequence();
 		this.random = new Random();
 		this.walkAction = null;
 	}
@@ -133,7 +129,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		Door door = new Door();
 		door.setMapFile("data/maps/test3.tmx");
-		door.warp(9, 15);
 		
 		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
@@ -160,13 +155,16 @@ public class ExploreScreen extends InputAdapter implements Screen {
 					map.addActor(player);
 					player.warp(0, 29);
 					pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-					followPathAction = null;
-					pathSequence = sequence();
+					walkAction = mapWalk(0, playerSpeed);
+					followPathAction = followPath(pathfinder, null, playerSpeed);
+					player.addAction(walkAction);
+					player.addAction(followPathAction);
 				}
 			}
 		});
-		
-		player.warp(0, 0);
+
+		door.warp(9, 15);
+		player.warp(9, 14);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 
@@ -176,7 +174,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		player.addAction(followPathAction);
 		
 		// testing a bunch of actors!
-		for(int i = 0; i < 30; ++i) {
+		for(int i = 0; i < 50; ++i) {
 			MapCharacter npc = makeCharacter();
 			npc.setGroup(MapActor.groupNPC);
 			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
@@ -214,7 +212,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.setWidth(Gdx.graphics.getWidth());
 		textBox.setHeight(Gdx.graphics.getHeight() / 4);
 		
-		uiStage.addActor(textBox);
+		//uiStage.addActor(textBox);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -281,19 +279,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Input.Keys.DPAD_UP:
-			walkAction.setDirection(MapWalkAction.dirUp);
-			break;
-			
 		case Input.Keys.DPAD_DOWN:
-			walkAction.setDirection(MapWalkAction.dirDown);
-			break;
-			
 		case Input.Keys.DPAD_LEFT:
-			walkAction.setDirection(MapWalkAction.dirLeft);
-			break;
-			
 		case Input.Keys.DPAD_RIGHT:
-			walkAction.setDirection(MapWalkAction.dirRight);
+			updateMovement();
 			break;
 		}
 
@@ -309,26 +298,27 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			return true;
 		
 		case Input.Keys.DPAD_UP:
-			if(walkAction.getDirection() == MapWalkAction.dirUp)
-				walkAction.setDirection(0);
-			break;
-			
 		case Input.Keys.DPAD_DOWN:
-			if(walkAction.getDirection() == MapWalkAction.dirDown)
-				walkAction.setDirection(0);
-			break;
-			
 		case Input.Keys.DPAD_LEFT:
-			if(walkAction.getDirection() == MapWalkAction.dirLeft)
-				walkAction.setDirection(0);
-			break;
-			
 		case Input.Keys.DPAD_RIGHT:
-			if(walkAction.getDirection() == MapWalkAction.dirRight)
-				walkAction.setDirection(0);
+			updateMovement();
 			break;
 		}
 
 		return false;
+	}
+	
+	private void updateMovement() {
+		if(Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+			walkAction.setDirection(MapWalkAction.dirUp);
+		} else if(Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
+			walkAction.setDirection(MapWalkAction.dirDown);
+		} else if(Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+			walkAction.setDirection(MapWalkAction.dirLeft);
+		} else if(Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+			walkAction.setDirection(MapWalkAction.dirRight);
+		} else {
+			walkAction.setDirection(0);
+		}
 	}
 }

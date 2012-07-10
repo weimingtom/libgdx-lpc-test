@@ -33,11 +33,13 @@ public class MapWalkAction extends Action {
 		
 		time += delta;
 		
-		if(moveTime == 0) {
+		if(moveTime == 0 && direction != 0) {
 			int oldTileX = mapActor.getTileX();
 			int oldTileY = mapActor.getTileY();
 			int tileX = oldTileX;
 			int tileY = oldTileY;
+			
+			mapActor.moveStarted();
 			
 			switch(direction) {
 			case dirUp:
@@ -57,10 +59,17 @@ public class MapWalkAction extends Action {
 				break;
 			}
 			
+			mapActor.moved(tileX, tileY);
+			
 			if(mapActor.move(tileX, tileY)) {
-				int tileWidth = mapActor.getMap().getTileWidth();
-				int tileHeight = mapActor.getMap().getTileHeight();
-				mapActor.addAction(moveBy((tileX - oldTileX) * tileWidth, (oldTileY - tileY) * tileHeight, duration));
+				Map map = mapActor.getMap();
+				
+				if(map != null) {
+					int tileWidth = mapActor.getMap().getTileWidth();
+					int tileHeight = mapActor.getMap().getTileHeight();
+					int height = mapActor.getMap().getMapHeightUnits();
+					mapActor.addAction(moveTo(tileX * tileWidth, height - tileY * tileHeight - tileHeight, duration));
+				}
 			}
 		}
 		
@@ -69,6 +78,9 @@ public class MapWalkAction extends Action {
 		
 		if(moveTime >= duration) {
 			moveTime = 0;
+			
+			if(direction == 0)
+				mapActor.moveStopped();
 		}
 		
 		return false;
