@@ -168,27 +168,29 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		player.warp(0, 0);
 		
-		walkAction = mapWalk(0, playerSpeed);
-		player.addAction(walkAction);
-		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
+
+		walkAction = mapWalk(0, playerSpeed);
+		followPathAction = followPath(pathfinder, null, playerSpeed);
+		player.addAction(walkAction);
+		player.addAction(followPathAction);
 		
 		// testing a bunch of actors!
-		/*for(int i = 0; i < 30; ++i) {
+		for(int i = 0; i < 30; ++i) {
 			MapCharacter npc = makeCharacter();
 			npc.setGroup(MapActor.groupNPC);
 			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
 			map.addActor(npc);
 			
 			// Keep attempting warp until it works
-			while(!npc.move(random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), 0, 0));
+			while(!npc.warp(random.nextInt(map.getWidth()), random.nextInt(map.getHeight())));
 			
 			Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), null);
 			
 			if(path != null) {
-				npc.addAction(followPath(map, pathfinder, path, (float) path.points.size() / playerSpeed));
+				npc.addAction(followPath(pathfinder, path, playerSpeed));
 			}
-		}*/
+		}
 		
 		uiStage = new Stage(w, h, false);
 		
@@ -246,9 +248,14 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		int endX = (int) pos.x / tileWidth;
 		int endY = height - (int) pos.y / tileHeight - 1;
 		
-		Path path = null;
+		Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
 		
-		if(followPathAction != null && followPathAction.getActor() == player) {
+		if(path != null) {
+			//followPathAction = followPath(pathfinder, path, playerSpeed);
+			followPathAction.setPath(path);
+		}
+		
+		/*if(followPathAction != null && followPathAction.getActor() == player) {
 			followPathAction.setStopIndex(followPathAction.getIndex() + 2);
 			Path.Point p = followPathAction.getPath().points.get(followPathAction.getStopIndex() - 1);
 			path = pathfinder.searchPath(p.x, p.y, endX, endY, null);
@@ -265,7 +272,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			} else if(pathSequence.getActor() == player) {
 				pathSequence.addAction(followPathAction);
 			}
-		}
+		}*/
 			
 		return true;
 	}

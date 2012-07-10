@@ -57,10 +57,9 @@ public class MapWalkAction extends Action {
 				break;
 			}
 			
-			int tileWidth = mapActor.getMap().getTileWidth();
-			int tileHeight = mapActor.getMap().getTileHeight();
-			
 			if(mapActor.move(tileX, tileY)) {
+				int tileWidth = mapActor.getMap().getTileWidth();
+				int tileHeight = mapActor.getMap().getTileHeight();
 				mapActor.addAction(moveBy((tileX - oldTileX) * tileWidth, (oldTileY - tileY) * tileHeight, duration));
 			}
 		}
