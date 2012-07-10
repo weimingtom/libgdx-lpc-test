@@ -36,7 +36,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private FollowPathAction followPathAction;
 	private Random random;
 	private MapWalkAction walkAction;
-	private TextBox.TextBoxStyle textBoxStyle; 
+	private StyledTable.TableStyle textBoxStyle;
+	private boolean mMenuActive;
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -44,6 +45,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		this.followPathAction = null;
 		this.random = new Random();
 		this.walkAction = null;
+		this.mMenuActive = false;
 	}
 
 	@Override
@@ -202,7 +204,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		NinePatch patch = atlas.createPatch("dialog-box");
 		
-		textBoxStyle = new TextBox.TextBoxStyle();
+		StyledTable.TableStyle textBoxStyle = new StyledTable.TableStyle();
 		textBoxStyle.background = new NinePatchDrawable(patch);
 		textBoxStyle.font = new BitmapFont();
 		textBoxStyle.padX = 8;
@@ -220,7 +222,16 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		textBox.setWidth(Gdx.graphics.getWidth());
 		textBox.setHeight(Gdx.graphics.getHeight() / 4);
 		
-		//uiStage.addActor(textBox);
+		uiStage.addActor(textBox);
+		
+		String [] options = {"Option1", "Option2", "Option3"};
+		textBoxStyle.padY = 0;
+		Menu menu = new Menu(options, textBoxStyle);
+		menu.setWidth(w / 4);
+		menu.setHeight(h / 2);
+		menu.setPosition(w - w / 4, h/ 3);
+		
+		uiStage.addActor(menu);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -334,6 +345,14 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		case Input.Keys.DPAD_RIGHT:
 			updateMovement();
 			break;
+			
+		case Input.Keys.B:
+			game.setScreen(game.battleScreen);
+			return true;
+			
+		case Input.Keys.M:
+			mMenuActive = ! mMenuActive;
+			return false;
 		}
 
 		return false;

@@ -10,6 +10,7 @@ public class RPG extends Game {
 	LoadingScreen loadingScreen;
 	MainMenuScreen mainMenuScreen;
 	ExploreScreen exploreScreen;
+	BattleScreen battleScreen;
 	
 	public RPG() {
 		state = new GameState();
@@ -28,6 +29,7 @@ public class RPG extends Game {
 		loadingScreen = new LoadingScreen(this);
 		exploreScreen = new ExploreScreen(this);
 		mainMenuScreen = new MainMenuScreen(this);
+		battleScreen = new BattleScreen(this);
 		setScreen(loadingScreen);
 	}
 
