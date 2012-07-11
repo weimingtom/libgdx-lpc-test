@@ -21,7 +21,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import static net.davexunit.rpg.MapActions.*;
 
 public class ExploreScreen extends InputAdapter implements Screen {
+	public static final int stateWalk = 0;
+	public static final int stateDialog = 1;
+	
 	private RPG game;
+	private int state;
 	private TextureAtlas atlas;
 	private TextureRegion texture;
 	private Tileset tileset;
@@ -32,6 +36,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private final int[] underLayers = { 0, 1, 2 };
 	private final int[] overLayers = { 3, 4 };
 	private final float playerSpeed = 6.5f; // tiles per second
+	private TextBox dialog;
 	private FPSLogger fps;
 	private FollowPathAction followPathAction;
 	private Random random;
@@ -118,6 +123,27 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		return character;
 	}
+	
+	public Chest makeChest() {
+		Chest chest = new Chest();
+		
+		Tileset tileset = new Tileset(atlas.findRegion("chests"), 32, 32, 0, 0);
+		Gdx.app.log("chest", "" + atlas.findRegion("chests").getRegionWidth() + ", " + tileset.getWidth());
+		
+		Animation animClosed = new Animation(0.15f, tileset.getTile(1));
+		animClosed.setPlayMode(Animation.NORMAL);
+		
+		Animation animOpen = new Animation(0.15f, tileset.getTile(3));
+		animOpen.setPlayMode(Animation.NORMAL);
+		
+		chest.animations.put("closed", animClosed);
+		chest.animations.put("open", animOpen);
+		chest.setGroup(MapActor.groupNPC);
+		chest.setCollisionGroup(MapActor.groupPlayer | MapActor.groupNPC);
+		chest.setState(Chest.stateClosed);
+		
+		return chest;
+	}
 
 	@Override
 	public void show() {
@@ -134,7 +160,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		door.setMapFile("data/maps/test3.tmx");
 		
 		Sign sign = new Sign();
+		sign.setMapCollidable(false);
 		sign.setText("Hello, world!");
+		
+		Chest chest = makeChest();
 		
 		map = game.getState().loadMap("Test");
 		map.setUnderLayers(underLayers);
@@ -142,10 +171,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		map.addActor(player);
 		map.addActor(door);
 		map.addActor(sign);
+		map.addActor(chest);
 		map.setMapListener(new MapListener() {
 			@Override
 			public void collided(MapActor actor1, MapActor actor2) {
-				//System.out.println("Collision!");
 			}
 
 			@Override
@@ -170,11 +199,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			}
 		});
 
+		chest.warp(6, 15);
 		sign.warp(8, 15);
 		door.warp(9, 15);
 		player.warp(9, 16);
-		
-		Gdx.app.log("interact", sign.getTileX() + ", " + sign.getTileY());
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
 
@@ -204,25 +232,18 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		NinePatch patch = atlas.createPatch("dialog-box");
 		
-		StyledTable.TableStyle textBoxStyle = new StyledTable.TableStyle();
+		textBoxStyle = new StyledTable.TableStyle();
 		textBoxStyle.background = new NinePatchDrawable(patch);
 		textBoxStyle.font = new BitmapFont();
 		textBoxStyle.padX = 8;
 		textBoxStyle.padY = 4;
-		
-		String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-				"Donec a diam lectus. Sed sit amet ipsum mauris. " +
-				"Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. " +
-				"Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. " +
-				"Nam tincidunt congue enim, ut porta lorem lacinia consectetur. " +
-				"Donec ut libero sed arcu vehicula ultricies a non tortor. " +
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
 				
-		TextBox textBox = new TextBox(text, textBoxStyle);
-		textBox.setWidth(Gdx.graphics.getWidth());
-		textBox.setHeight(Gdx.graphics.getHeight() / 4);
+		dialog = new TextBox("", textBoxStyle);
+		dialog.setWidth(Gdx.graphics.getWidth());
+		dialog.setHeight(Gdx.graphics.getHeight() / 4);
+		dialog.setVisible(false);
 		
-		uiStage.addActor(textBox);
+		uiStage.addActor(dialog);
 		
 		String [] options = {"Option1", "Option2", "Option3"};
 		textBoxStyle.padY = 0;
@@ -231,7 +252,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		menu.setHeight(h / 2);
 		menu.setPosition(w - w / 4, h/ 3);
 		
-		uiStage.addActor(menu);
+		//uiStage.addActor(menu);
 		
 		Gdx.input.setInputProcessor(this);
 	}
@@ -243,7 +264,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		switch(player.getDirection()) {
 		case MapCharacter.dirUp:
-			Gdx.app.log("interact", "UP!");
 			actor = map.getFirstActor(tileX, tileY - 1);
 			break;
 
@@ -258,22 +278,22 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		case MapCharacter.dirRight:
 			actor = map.getFirstActor(tileX + 1, tileY);
 			break;
-			
 		}
 		
 		if(actor == null)
 			return;
 		
-		Gdx.app.log("interact", "not null");
-		
 		if(actor instanceof Sign) {
-			Gdx.app.log("interact", "SIGN!");
 			Sign sign = (Sign) actor;
 			
-			TextBox dialog = new TextBox(sign.getText(), textBoxStyle);
-			dialog.setWidth(Gdx.graphics.getWidth());
-			dialog.setHeight(Gdx.graphics.getHeight() / 4);
-			uiStage.addActor(dialog);
+			state = stateDialog;
+			
+			dialog.setText(sign.getText());
+			dialog.setVisible(true);
+		} else if(actor instanceof Chest) {
+			Chest chest = (Chest) actor;
+			
+			chest.setState(Chest.stateOpen);
 		}
 	}
 
@@ -297,19 +317,21 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		Vector2 pos = new Vector2();
-		pos.set(x, y);
-		map.screenToMapCoordinates(pos);
-		int tileWidth = map.getTileWidth();
-		int tileHeight = map.getTileHeight();
-		int height = map.getHeight();
-		int endX = (int) pos.x / tileWidth;
-		int endY = height - (int) pos.y / tileHeight - 1;
-		
-		Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
-		
-		if(path != null) {
-			followPathAction.setPath(path);
+		if(state == stateWalk) {
+			Vector2 pos = new Vector2();
+			pos.set(x, y);
+			map.screenToMapCoordinates(pos);
+			int tileWidth = map.getTileWidth();
+			int tileHeight = map.getTileHeight();
+			int height = map.getHeight();
+			int endX = (int) pos.x / tileWidth;
+			int endY = height - (int) pos.y / tileHeight - 1;
+			
+			Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
+			
+			if(path != null) {
+				followPathAction.setPath(path);
+			}
 		}
 			
 		return true;
@@ -317,15 +339,25 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		switch (keycode) {
-		case Input.Keys.DPAD_UP:
-		case Input.Keys.DPAD_DOWN:
-		case Input.Keys.DPAD_LEFT:
-		case Input.Keys.DPAD_RIGHT:
-			updateMovement();
-			break;
-		case Input.Keys.Z:
-			interact();
+		if(state == stateWalk) {
+			switch(keycode) {
+			case Input.Keys.DPAD_UP:
+			case Input.Keys.DPAD_DOWN:
+			case Input.Keys.DPAD_LEFT:
+			case Input.Keys.DPAD_RIGHT:
+				updateMovement();
+				break;
+				
+			case Input.Keys.Z:
+				interact();
+				break;
+			}
+		} else if(state == stateDialog) {
+			switch(keycode) {
+			case Input.Keys.Z:
+				state = stateWalk;
+				dialog.setVisible(false);
+			}
 		}
 
 		return false;
@@ -333,26 +365,28 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	
 	@Override
 	public boolean keyUp(int keycode) {
-		switch (keycode) {
-		case Input.Keys.BACK:
-		case Input.Keys.ESCAPE:
-			game.setScreen(game.mainMenuScreen);
-			return true;
-		
-		case Input.Keys.DPAD_UP:
-		case Input.Keys.DPAD_DOWN:
-		case Input.Keys.DPAD_LEFT:
-		case Input.Keys.DPAD_RIGHT:
-			updateMovement();
-			break;
+		if(state == stateWalk) {
+			switch (keycode) {
+			case Input.Keys.BACK:
+			case Input.Keys.ESCAPE:
+				game.setScreen(game.mainMenuScreen);
+				return true;
 			
-		case Input.Keys.B:
-			game.setScreen(game.battleScreen);
-			return true;
-			
-		case Input.Keys.M:
-			mMenuActive = ! mMenuActive;
-			return false;
+			case Input.Keys.DPAD_UP:
+			case Input.Keys.DPAD_DOWN:
+			case Input.Keys.DPAD_LEFT:
+			case Input.Keys.DPAD_RIGHT:
+				updateMovement();
+				break;
+				
+			case Input.Keys.B:
+				game.setScreen(game.battleScreen);
+				return true;
+				
+			case Input.Keys.M:
+				mMenuActive = ! mMenuActive;
+				return false;
+			}
 		}
 
 		return false;

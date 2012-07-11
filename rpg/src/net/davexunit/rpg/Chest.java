@@ -1,5 +1,7 @@
 package net.davexunit.rpg;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -7,55 +9,28 @@ public class Chest extends MapActor {
 	public static final int stateClosed = 1;
 	public static final int stateOpen = 2;
 	
-	private Animation idleAnimation;
-	private Animation openAnimation;
-	private Item item;
+	public final HashMap<String, Animation> animations;
+	public Animation currentAnimation;
 	private int animTime;
+	private Item item;
 	private int state;
 	
 	public Chest() {
 		super();
 		
-		this.idleAnimation = null;
-		this.openAnimation = null;
+		this.animations = new HashMap<String, Animation>();
+		this.currentAnimation = null;
 		this.item = null;
 		this.animTime = 0;
-		this.state = stateClosed;
+		this.state = 0;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
 		
-		Animation anim = null;
-		
-		switch(state) {
-		case stateClosed:
-			anim = idleAnimation;
-			break;
-			
-		case stateOpen:
-			anim = openAnimation;
-			break;
-		}
-		
-		batch.draw(anim.getKeyFrame(animTime), getX(), getY());
-	}
-
-	public Animation getIdleAnimation() {
-		return idleAnimation;
-	}
-
-	public void setIdleAnimation(Animation idleAnimation) {
-		this.idleAnimation = idleAnimation;
-	}
-
-	public Animation getOpenAnimation() {
-		return openAnimation;
-	}
-
-	public void setOpenAnimation(Animation openAnimation) {
-		this.openAnimation = openAnimation;
+		if(currentAnimation != null)
+			batch.draw(currentAnimation.getKeyFrame(animTime), getX(), getY());
 	}
 
 	public Item getItem() {
@@ -73,5 +48,15 @@ public class Chest extends MapActor {
 	public void setState(int state) {
 		this.state = state;
 		this.animTime = 0;
+		
+		switch(state) {
+		case stateClosed:
+			currentAnimation = animations.get("closed");
+			break;
+			
+		case stateOpen:
+			currentAnimation = animations.get("open");
+			break;
+		}
 	}
 }

@@ -138,7 +138,7 @@ public class Map {
 			return false;
 		}
 		
-		if(!checkMapCollision(tileX, tileY)) {
+		if(!checkMapCollision(tileX, tileY) || !actor.getMapCollidable()) {
 			actor.setTilePos(tileX, tileY);
 			stageDirty = true;
 			

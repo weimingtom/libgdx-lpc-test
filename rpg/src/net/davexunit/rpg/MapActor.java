@@ -3,14 +3,16 @@ package net.davexunit.rpg;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class MapActor extends Actor {
-	public static final int groupPlayer = 1;
-	public static final int groupNPC = 2;
+	public static final int groupMap = 1;
+	public static final int groupPlayer = 2;
+	public static final int groupNPC = 3;
 	
 	private Map map;
 	private int tileX;
 	private int tileY;
-	private int collisionGroup;
 	private int group;
+	private int collisionGroup;
+	private boolean mapCollidable;
 	
 	public MapActor() {
 		super();
@@ -19,6 +21,7 @@ public abstract class MapActor extends Actor {
 		this.tileY = -1;
 		this.collisionGroup = 0;
 		this.group = 0;
+		this.mapCollidable = true;
 	}
 
 	public int getCollisionGroup() {
@@ -90,5 +93,13 @@ public abstract class MapActor extends Actor {
 	
 	public void moveStopped() {
 		
+	}
+
+	public boolean getMapCollidable() {
+		return mapCollidable;
+	}
+
+	public void setMapCollidable(boolean mapCollidable) {
+		this.mapCollidable = mapCollidable;
 	}
 }

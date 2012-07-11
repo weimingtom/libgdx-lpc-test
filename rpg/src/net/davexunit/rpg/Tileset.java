@@ -35,8 +35,8 @@ public class Tileset {
 		this.tileHeight = tileHeight;
 		this.margin = margin;
 		this.spacing = spacing;
-		this.width = (texture.getRegionHeight() - margin) / (tileHeight + spacing);
-		this.height = (texture.getRegionWidth() - margin) / (tileWidth + spacing);
+		this.width = (texture.getRegionWidth() - margin) / (tileWidth + spacing);
+		this.height = (texture.getRegionHeight() - margin) / (tileHeight + spacing);
 		this.tiles = new TextureRegion[width * height];
 		
 		// TextureRegion.split() would've worked just fine but it doesn't support margins or spacing so I wrote this instead.
