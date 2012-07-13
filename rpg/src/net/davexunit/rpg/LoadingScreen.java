@@ -2,6 +2,7 @@ package net.davexunit.rpg;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -42,6 +43,9 @@ public class LoadingScreen implements Screen {
 			}
 			
 			text += game.manager.getProgress();
+			
+			Gdx.gl.glClearColor(0, 0, 0, 0);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
 			batch.begin();
 			font.draw(batch, text, w / 2 -  font.getBounds(text).width / 2, h / 2);

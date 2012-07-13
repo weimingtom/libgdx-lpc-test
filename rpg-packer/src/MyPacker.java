@@ -55,9 +55,9 @@ public class MyPacker {
 		}
         
         try {
-            packer.processMap(inputDir, outputDir, settings);
+        	packer.processMap(inputDir, outputDir, settings);
 	    } catch (IOException e) {
-	            throw new RuntimeException("Error processing map: " + e.getMessage());
+	    	throw new RuntimeException("Error processing map: " + e.getMessage());
 	    }
     }
 }

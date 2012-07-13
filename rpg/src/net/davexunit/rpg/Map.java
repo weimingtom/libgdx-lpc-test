@@ -14,8 +14,9 @@ import com.badlogic.gdx.graphics.g2d.tiled.TiledObjectGroup;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Map {
+public class Map implements Disposable {
 	private String name;
 	private Stage stage;
 	private TiledMap map;

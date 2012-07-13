@@ -21,8 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import static net.davexunit.rpg.MapActions.*;
 
 public class ExploreScreen extends InputAdapter implements Screen {
-	public static final int stateWalk = 0;
-	public static final int stateDialog = 1;
+	public static final int stateLoading = 0;
+	public static final int stateWalk = 1;
+	public static final int stateDialog = 2;
 	
 	private RPG game;
 	private int state;
@@ -32,6 +33,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Stage uiStage;
 	private MapCharacter player;
 	private Map map;
+	private String mapFileName;
 	private Pathfinder pathfinder;
 	private final int[] underLayers = { 0, 1, 2 };
 	private final int[] overLayers = { 3, 4 };
@@ -42,7 +44,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 	private Random random;
 	private MapWalkAction walkAction;
 	private StyledTable.TableStyle textBoxStyle;
-	private boolean mMenuActive;
+	private boolean menuActive;
+	private int spawnX, spawnY;
 	
 	public ExploreScreen(RPG game) {
 		this.game = game;
@@ -50,20 +53,45 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		this.followPathAction = null;
 		this.random = new Random();
 		this.walkAction = null;
-		this.mMenuActive = false;
+		this.menuActive = false;
+		this.mapFileName = null;
 	}
 
 	@Override
 	public void render(float delta) {
-		map.act(Gdx.graphics.getDeltaTime());
-		centerCamera();
-
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		map.draw();
-		uiStage.draw();
-		fps.log();
+		switch(state) {
+		case stateWalk:
+			map.act(Gdx.graphics.getDeltaTime());
+			
+			if(state != stateWalk)
+				break;
+			
+			centerCamera();
+	
+			Gdx.gl.glClearColor(1, 1, 1, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			map.draw();
+			uiStage.draw();
+			fps.log();
+			break;
+		
+		case stateDialog:
+			uiStage.act(Gdx.graphics.getDeltaTime());
+			Gdx.gl.glClearColor(1, 1, 1, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			map.draw();
+			uiStage.draw();
+			fps.log();
+			break;
+			
+		case stateLoading:
+			if(game.manager.update()) {
+				showMap();
+			}
+			
+			Gdx.gl.glClearColor(0, 0, 0, 0);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		}
 	}
 
 	public void centerCamera() {
@@ -76,9 +104,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 		if (x < halfW)
 			x = halfW;
-		else if (x > mapW - halfW) {
+		else if (x > mapW - halfW)
 			x = mapW - halfW;
-		}
 
 		if (y < halfH) {
 			y = halfH;
@@ -128,7 +155,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		Chest chest = new Chest();
 		
 		Tileset tileset = new Tileset(atlas.findRegion("chests"), 32, 32, 0, 0);
-		Gdx.app.log("chest", "" + atlas.findRegion("chests").getRegionWidth() + ", " + tileset.getWidth());
 		
 		Animation animClosed = new Animation(0.15f, tileset.getTile(1));
 		animClosed.setPlayMode(Animation.NORMAL);
@@ -144,34 +170,22 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		
 		return chest;
 	}
-
-	@Override
-	public void show() {
+	
+	private void loadMap(String fileName, int spawnX, int spawnY) {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		atlas = game.manager.get("data/sprites/spritepack.atlas", TextureAtlas.class);
-		texture = atlas.findRegion("ghost");
-		
-		tileset = new Tileset(texture, 40, 46, 0, 0);
-		player = makeCharacter();
-		
-		Door door = new Door();
-		door.setMapFile("data/maps/test3.tmx");
-		
-		Sign sign = new Sign();
-		sign.setMapCollidable(false);
-		sign.setText("Hello, world!");
-		
-		Chest chest = makeChest();
-		
-		map = game.getState().loadMap("Test");
+		mapFileName = fileName;
+		setSpawn(spawnX, spawnY);
+		state = stateLoading;
+		game.manager.load(fileName, Map.class, new MapLoader.MapParameter("data/maps", w, h));
+	}
+	
+	private void showMap() {
+		state = stateWalk;
+		map = game.manager.get(mapFileName, Map.class);
 		map.setUnderLayers(underLayers);
 		map.setOverLayers(overLayers);
-		map.addActor(player);
-		map.addActor(door);
-		map.addActor(sign);
-		map.addActor(chest);
 		map.setMapListener(new MapListener() {
 			@Override
 			public void collided(MapActor actor1, MapActor actor2) {
@@ -180,54 +194,81 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			@Override
 			public void overlapped(MapActor actor1, MapActor actor2) {
 				if(actor1 == player && actor2 instanceof Door) {
-					float w = Gdx.graphics.getWidth();
-					float h = Gdx.graphics.getHeight();
 					Door door = (Door) actor2;
-					map.dispose();
-					map = new Map(Gdx.files.internal(door.getMapFile()), Gdx.files.internal("data/maps"), w, h);
-					map.setUnderLayers(underLayers);
-					map.setOverLayers(overLayers);
-					player = makeCharacter();
-					map.addActor(player);
-					player.warp(0, 29);
-					pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-					walkAction = mapWalk(0, playerSpeed);
-					followPathAction = followPath(pathfinder, null, playerSpeed);
-					player.addAction(walkAction);
-					player.addAction(followPathAction);
+					game.manager.unload(mapFileName);
+					loadMap(door.getMapFile(), door.getSpawnX(), door.getSpawnY());
 				}
 			}
 		});
-
-		chest.warp(6, 15);
-		sign.warp(8, 15);
-		door.warp(9, 15);
-		player.warp(9, 16);
 		
 		pathfinder = new Pathfinder(new MapPathfinderStrategy(map));
-
 		walkAction = mapWalk(0, playerSpeed);
 		followPathAction = followPath(pathfinder, null, playerSpeed);
+		player = makeCharacter();
 		player.addAction(walkAction);
 		player.addAction(followPathAction);
+		map.addActor(player);
+		player.warp(spawnX, spawnY);
 		
-		// testing a bunch of actors!
-		for(int i = 0; i < 50; ++i) {
-			MapCharacter npc = makeCharacter();
-			npc.setGroup(MapActor.groupNPC);
-			npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
-			map.addActor(npc);
+		if(mapFileName.equals("data/maps/test2.tmx")) {
+			Door door = new Door();
+			door.setMapFile("data/maps/test3.tmx");
+			door.setWarp(12, 27);
 			
-			// Keep attempting warp until it works
-			while(!npc.warp(random.nextInt(map.getWidth()), random.nextInt(map.getHeight())));
+			Sign sign = new Sign();
+			sign.setMapCollidable(false);
+			sign.setText("Hello, world!");
 			
-			Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), null);
+			Chest chest = makeChest();
 			
-			if(path != null) {
-				npc.addAction(followPath(pathfinder, path, playerSpeed));
+			map.addActor(door);
+			map.addActor(sign);
+			map.addActor(chest);
+			
+			chest.warp(6, 15);
+			sign.warp(8, 15);
+			door.warp(9, 15);
+			
+			for(int i = 0; i < 15; ++i) {
+				MapCharacter npc = makeCharacter();
+				npc.setGroup(MapActor.groupNPC);
+				npc.setCollisionGroup(MapActor.groupNPC | MapActor.groupPlayer);
+				map.addActor(npc);
+				
+				// Keep attempting warp until it works
+				while(!npc.warp(random.nextInt(map.getWidth()), random.nextInt(map.getHeight())));
+				
+				Path path = pathfinder.searchPath(npc.getTileX(), npc.getTileY(), random.nextInt(map.getWidth()), random.nextInt(map.getHeight()), null);
+				
+				if(path != null) {
+					npc.addAction(followPath(pathfinder, path, playerSpeed));
+				}
 			}
+		} else if(mapFileName.equals("data/maps/test3.tmx")) {
+			Door door = new Door();
+			door.setMapFile("data/maps/test2.tmx");
+			door.setWarp(9, 16);
+			
+			map.addActor(door);
+			
+			door.warp(12, 26);
 		}
+	}
+	
+	private void setSpawn(int spawnX, int spawnY) {
+		this.spawnX = spawnX;
+		this.spawnY = spawnY;
+	}
+
+	@Override
+	public void show() {
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
 		
+		state = stateWalk;
+		atlas = game.manager.get("data/sprites/spritepack.atlas", TextureAtlas.class);
+		texture = atlas.findRegion("ghost");
+		tileset = new Tileset(texture, 40, 46, 0, 0);		
 		uiStage = new Stage(w, h, false);
 		
 		NinePatch patch = atlas.createPatch("dialog-box");
@@ -255,9 +296,11 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		//uiStage.addActor(menu);
 		
 		Gdx.input.setInputProcessor(this);
+		
+		loadMap("data/maps/test2.tmx", 8, 16);
 	}
 	
-	private void interact() {
+	private boolean interact() {
 		MapActor actor = null;
 		int tileX = player.getTileX();
 		int tileY = player.getTileY();
@@ -281,13 +324,12 @@ public class ExploreScreen extends InputAdapter implements Screen {
 		}
 		
 		if(actor == null)
-			return;
+			return false;
 		
 		if(actor instanceof Sign) {
 			Sign sign = (Sign) actor;
 			
 			state = stateDialog;
-			
 			dialog.setText(sign.getText());
 			dialog.setVisible(true);
 		} else if(actor instanceof Chest) {
@@ -295,6 +337,8 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			
 			chest.setState(Chest.stateOpen);
 		}
+		
+		return true;
 	}
 
 	@Override
@@ -311,7 +355,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void dispose() {
-		map.dispose();
+		game.manager.unload(mapFileName);
 		uiStage.dispose();
 	}
 
@@ -321,17 +365,39 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			Vector2 pos = new Vector2();
 			pos.set(x, y);
 			map.screenToMapCoordinates(pos);
+			
 			int tileWidth = map.getTileWidth();
 			int tileHeight = map.getTileHeight();
 			int height = map.getHeight();
 			int endX = (int) pos.x / tileWidth;
 			int endY = height - (int) pos.y / tileHeight - 1;
+			int dx = endX - player.getTileX();
+			int dy = endY - player.getTileY();
+			
+			// Set direction
+			if(dy > 0)
+				player.setDirection(MapCharacter.dirDown);
+			else if(dy < 0)
+				player.setDirection(MapCharacter.dirUp);
+			else if(dx > 0)
+				player.setDirection(MapCharacter.dirRight);
+			else if(dx < 0)
+				player.setDirection(MapCharacter.dirLeft);
+			
+			// Interact if the player touched a neighboring tile.
+			if(Math.abs(endX - player.getTileX()) <= 1 &&
+			   Math.abs(endY - player.getTileY()) <= 1 &&
+			   interact())
+				return true;
 			
 			Path path = pathfinder.searchPath(player.getTileX(), player.getTileY(), endX, endY, null);
 			
 			if(path != null) {
 				followPathAction.setPath(path);
 			}
+		} else if(state == stateDialog) {
+			state = stateWalk;
+			dialog.setVisible(false);
 		}
 			
 		return true;
@@ -384,7 +450,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 				return true;
 				
 			case Input.Keys.M:
-				mMenuActive = ! mMenuActive;
+				menuActive = ! menuActive;
 				return false;
 			}
 		}

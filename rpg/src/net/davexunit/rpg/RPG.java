@@ -3,6 +3,7 @@ package net.davexunit.rpg;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 public class RPG extends Game {
 	private final GameState state;
@@ -21,6 +22,7 @@ public class RPG extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		manager = new AssetManager();
+		manager.setLoader(Map.class, new MapLoader(new InternalFileHandleResolver()));
 		
 		state.setDatabaseHelper(new DummyDatabaseHelper());
 		state.setConfigHelper(new DummyConfigHelper());
