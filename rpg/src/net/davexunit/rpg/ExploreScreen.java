@@ -67,7 +67,6 @@ public class ExploreScreen extends InputAdapter implements Screen {
 				break;
 			
 			centerCamera();
-	
 			Gdx.gl.glClearColor(1, 1, 1, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			map.draw();
@@ -219,7 +218,12 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			sign.setMapCollidable(false);
 			sign.setText("Hello, world!");
 			
+			Item item = new StatusItem();
+			item.setName("Something Potentially Useful");
+			item.setDescription("Balls");
+			
 			Chest chest = makeChest();
+			chest.setItem(item);
 			
 			map.addActor(door);
 			map.addActor(sign);
@@ -336,6 +340,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 			Chest chest = (Chest) actor;
 			
 			chest.setState(Chest.stateOpen);
+			state = stateDialog;
+			dialog.setText("You found " + chest.getItem().getName() + "!");
+			dialog.setVisible(true);
+			game.state.getInventory().add(chest.getItem(), chest.getQuantity());
 		}
 		
 		return true;
@@ -343,6 +351,7 @@ public class ExploreScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void hide() {
+		game.manager.unload(mapFileName);
 	}
 
 	@Override
@@ -416,6 +425,10 @@ public class ExploreScreen extends InputAdapter implements Screen {
 				
 			case Input.Keys.Z:
 				interact();
+				break;
+				
+			case Input.Keys.I:
+				game.setScreen(game.inventoryScreen);
 				break;
 			}
 		} else if(state == stateDialog) {

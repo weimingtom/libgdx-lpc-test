@@ -1,5 +1,7 @@
 package net.davexunit.rpg;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -10,7 +12,9 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ActorEvent;
+import com.badlogic.gdx.scenes.scene2d.ActorListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -21,14 +25,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 public class MainMenuScreen extends InputAdapter implements Screen {
-	RPG game;
-	InputMultiplexer input;
-	Stage stage;
-	TextureAtlas atlas;
-	Tileset buttonTileset;
-	NinePatch buttonPatchUp;
-	NinePatch buttonPatchDown;
-	TextButtonStyle buttonStyle;
+	private RPG game;
+	private InputMultiplexer input;
+	private Stage stage;
+	private TextureAtlas atlas;
+	private NinePatch buttonPatchUp;
+	private NinePatch buttonPatchDown;
+	private TextButtonStyle buttonStyle;
+	private ArrayList<Actor> menuOptions;
+	private int selectedIndex;
 	
 	public MainMenuScreen(RPG game) {
 		this.game = game;
@@ -71,7 +76,7 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		loadGame.addListener(new ClickListener() {
 			@Override
 			public void clicked(ActorEvent event, float x, float y) {
-				game.setScreen(game.exploreScreen);
+				game.setScreen(game.loadGameScreen);
 			}
 	    });
 		
@@ -90,6 +95,14 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 				game.setScreen(game.exploreScreen);
 			}
 	    });
+		
+		menuOptions = new ArrayList<Actor>();
+		menuOptions.add(continueGame);
+		menuOptions.add(loadGame);
+		menuOptions.add(newGame);
+		menuOptions.add(options);
+		
+		selectedIndex = 0;
 		
 		Table table = new Table();
 		table.setWidth(300);
@@ -115,6 +128,31 @@ public class MainMenuScreen extends InputAdapter implements Screen {
 		stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		stage.addActor(table);
 		stage.addActor(title);
+		stage.setKeyboardFocus(menuOptions.get(selectedIndex));
+		stage.addListener(new ActorListener() {
+			@Override
+			public boolean keyDown(ActorEvent event, int keycode) {
+				switch(keycode) {
+				case Input.Keys.DPAD_UP:
+					--selectedIndex;
+					
+					if(selectedIndex < 0)
+						selectedIndex = menuOptions.size() - 1;
+					break;
+					
+				case Input.Keys.DPAD_DOWN:
+					++selectedIndex;
+					
+					if(selectedIndex > menuOptions.size() - 1)
+						selectedIndex = 0;
+					break;
+				}
+				
+				stage.setKeyboardFocus(menuOptions.get(selectedIndex));
+				
+				return true;
+			}
+		});
 		
 		input = new InputMultiplexer();
 		input.addProcessor(this);

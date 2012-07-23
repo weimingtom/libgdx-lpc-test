@@ -26,9 +26,17 @@ public class DummyDatabaseHelper implements DatabaseHelper {
 
 	@Override
 	public Inventory loadInventory() {
-		Inventory inventory = new Inventory();
+		Item pumpkin = new StatusItem();
+		pumpkin.setName("Pumpkin");
+		pumpkin.setDescription("Can be somewhat spooky.");
 		
-		inventory.addItem("Pumpkin", 5);
+		Item blueberry = new StatusItem();
+		blueberry.setName("Blueberry");
+		blueberry.setDescription("I hope Chris doesn't crush these");
+		
+		Inventory inventory = new Inventory();
+		inventory.elements.add(new Inventory.Element(pumpkin, 5));
+		inventory.elements.add(new Inventory.Element(blueberry, 3));
 		
 		return inventory;
 	}

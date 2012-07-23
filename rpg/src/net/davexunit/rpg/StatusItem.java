@@ -2,7 +2,7 @@ package net.davexunit.rpg;
 
 public class StatusItem extends Item {
 	public StatusItem() {
-		type = itemStatus;
+		super();
 	}
 	
 	@Override

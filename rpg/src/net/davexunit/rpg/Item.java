@@ -1,16 +1,24 @@
 package net.davexunit.rpg;
 
 public abstract class Item {
-	public static final int itemStatus = 1;
-	public static final int itemWeapon = 2;
-	public static final int itemArmor = 3;
-	public static final int itemBoots = 4;
-	public static final int itemHelm = 5;
-	
 	protected String name;
 	protected String description;
-	protected int type;
 	
+	public Item() {
+		this.name = null;
+		this.description = null;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Item))
+			return false;
+		
+		Item other = (Item) obj;
+		
+		return name.equals(other.name);
+	}
+
 	public abstract Item copy();
 	
 	public String getName() {
@@ -27,9 +35,5 @@ public abstract class Item {
 	
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	public int getType() {
-		return type;
 	}
 }

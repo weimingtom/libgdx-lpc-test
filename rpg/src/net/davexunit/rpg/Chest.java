@@ -13,6 +13,7 @@ public class Chest extends MapActor {
 	public Animation currentAnimation;
 	private int animTime;
 	private Item item;
+	private int quantity;
 	private int state;
 	
 	public Chest() {
@@ -23,6 +24,7 @@ public class Chest extends MapActor {
 		this.item = null;
 		this.animTime = 0;
 		this.state = 0;
+		this.quantity = 1;
 	}
 
 	@Override
@@ -58,5 +60,13 @@ public class Chest extends MapActor {
 			currentAnimation = animations.get("open");
 			break;
 		}
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

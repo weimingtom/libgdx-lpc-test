@@ -4,25 +4,21 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class GameState {
 	private Party party;
-	private Items items;
 	private Inventory inventory;
 	private DatabaseHelper db;
 	private ConfigHelper config;
 	
 	public GameState() {
 		this.party = null;
-		this.items = null;
 		this.inventory = null;
 		this.db = null;
 		this.config = null;
 	}
 	
 	public void load(FileHandle file) {
-		items = config.loadItems();
 		db.open(file);
 		party = db.loadParty();
 		inventory = db.loadInventory();
-		inventory.setItems(items);
 	}
 	
 	public void save(FileHandle file) {
@@ -36,10 +32,6 @@ public class GameState {
 	
 	public Party getParty() {
 		return party;
-	}
-
-	public Items getItems() {
-		return items;
 	}
 
 	public Inventory getInventory() {

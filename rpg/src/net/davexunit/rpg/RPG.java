@@ -6,11 +6,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 public class RPG extends Game {
-	private final GameState state;
+	public final GameState state;
 	AssetManager manager;
 	LoadingScreen loadingScreen;
 	MainMenuScreen mainMenuScreen;
+	LoadGameScreen loadGameScreen;
 	ExploreScreen exploreScreen;
+	InventoryScreen inventoryScreen;
 	BattleScreen battleScreen;
 	
 	public RPG() {
@@ -29,13 +31,11 @@ public class RPG extends Game {
 		state.load(Gdx.files.internal("data/saves/save1"));
 		
 		loadingScreen = new LoadingScreen(this);
-		exploreScreen = new ExploreScreen(this);
 		mainMenuScreen = new MainMenuScreen(this);
+		loadGameScreen = new LoadGameScreen(this);
+		exploreScreen = new ExploreScreen(this);
+		inventoryScreen = new InventoryScreen(this);
 		battleScreen = new BattleScreen(this);
 		setScreen(loadingScreen);
-	}
-
-	public GameState getState() {
-		return state;
 	}
 }

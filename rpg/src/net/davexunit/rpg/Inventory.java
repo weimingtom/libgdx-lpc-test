@@ -1,51 +1,47 @@
 package net.davexunit.rpg;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Inventory {
-	// Mapping from item name to quantity.
-	// Look up items in an Items instance.
-	private final HashMap<String, Integer> inventory;
-	private Items items;
-	
-	public Inventory() {
-		inventory = new HashMap<String, Integer>();
-	}
-	
-	public Item withdrawItem(String name) {
-		int quantity = inventory.get(name);
+	public static class Element {
+		public final Item item;
+		public int quantity;
 		
-		if(quantity > 0) {
-			--quantity;
-			
-			if(quantity <= 0)
-				inventory.remove(name);
-			else
-				inventory.put(name, quantity);
-			
-			return items.getItem(name);
+		public Element(Item item) {
+			this.item = item;
+			this.quantity = 1;
 		}
 		
-		return null;
+		public Element(Item item, int quantity) {
+			this.item = item;
+			this.quantity = quantity;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(!(obj instanceof Element))
+				return false;
+			
+			Element other = (Element) obj;
+			
+			return item.equals(other.item);
+		}
 	}
 	
-	public void addItem(String name, int quantity) {
-		if(inventory.containsKey(name)) {
-			quantity += inventory.get(name);
-			inventory.put(name, quantity);
-		} else
-			inventory.put(name, quantity);
+	public final ArrayList<Element> elements;
+	
+	public Inventory() {
+		elements = new ArrayList<Element>();
 	}
-
-	public Items getItems() {
-		return items;
-	}
-
-	public void setItems(Items items) {
-		this.items = items;
-	}
-
-	public HashMap<String, Integer> getInventory() {
-		return inventory;
+	
+	public void add(Item item, int quantity) {
+		for(Element e: elements) {
+			if(e.item.equals(item)) {
+				e.quantity += quantity;
+				return;
+			}
+		}
+		
+		elements.add(new Element(item, quantity));
 	}
 }
